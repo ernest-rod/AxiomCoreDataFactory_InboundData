@@ -1,0 +1,7 @@
+{
+	"name": "MoveAllFilesFromFTP",
+	"properties": {
+		"description": "Get all files from the FTP server into the inbound storage.",
+		"annotations": []
+	}
+}
