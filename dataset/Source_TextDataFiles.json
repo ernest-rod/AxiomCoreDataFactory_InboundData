@@ -1,5 +1,5 @@
 {
-	"name": "TextDataFiles",
+	"name": "Source_TextDataFiles",
 	"properties": {
 		"description": "All text files in test area in FTP server.",
 		"linkedServiceName": {
