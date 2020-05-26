@@ -4,7 +4,8 @@
 		"description": "Get all files from the FTP server into the inbound storage.",
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Get_All_Text_Files",
+				"description": "Get all text files from FTP server.",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,8 +17,44 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FtpReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "test_area",
+							"wildcardFileName": "*",
+							"useBinaryTransfer": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "TextDataFiles",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_gqw",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"folder": {
