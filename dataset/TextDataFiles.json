@@ -1,0 +1,22 @@
+{
+	"name": "TextDataFiles",
+	"properties": {
+		"description": "All text files in test area in FTP server.",
+		"linkedServiceName": {
+			"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FtpServerLocation",
+				"folderPath": "test_area"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
