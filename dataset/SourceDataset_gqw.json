@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Axiom Datasets"
+			"name": "Axiom Datasets/Test Area"
 		},
 		"annotations": [],
 		"type": "DelimitedText",

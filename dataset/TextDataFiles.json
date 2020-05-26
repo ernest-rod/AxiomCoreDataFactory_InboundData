@@ -6,6 +6,9 @@
 			"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Axiom Datasets/Test Area"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
