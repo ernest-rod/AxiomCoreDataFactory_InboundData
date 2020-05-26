@@ -51,7 +51,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DestinationDataset_gqw",
+						"referenceName": "Destination_TextDataFiles",
 						"type": "DatasetReference"
 					}
 				]
