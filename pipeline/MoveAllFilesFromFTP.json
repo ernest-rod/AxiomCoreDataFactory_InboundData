@@ -45,7 +45,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "TextDataFiles",
+						"referenceName": "Source_TextDataFiles",
 						"type": "DatasetReference"
 					}
 				],
