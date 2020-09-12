@@ -2,7 +2,7 @@
 	"name": "AW_CSV_Files",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Seagate",
+			"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
@@ -12,8 +12,8 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "SftpLocation",
-				"folderPath": "/test_area"
+				"type": "FtpServerLocation",
+				"folderPath": "test_area"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
