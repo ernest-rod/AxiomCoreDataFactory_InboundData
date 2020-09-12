@@ -1,0 +1,22 @@
+{
+	"name": "AW_DW_Files",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_Inbound_Data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "New Arrivals",
+				"container": "inbounddatafiles"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
