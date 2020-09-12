@@ -537,7 +537,9 @@
 								"type": "DelimitedTextSource",
 								"storeSettings": {
 									"type": "SftpReadSettings",
-									"recursive": true
+									"recursive": true,
+									"wildcardFolderPath": "home/ernest/ftp/test_area",
+									"wildcardFileName": "*.csv"
 								},
 								"formatSettings": {
 									"type": "DelimitedTextReadSettings"
@@ -631,7 +633,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "SftpLocation",
-						"fileName": "*.csv",
 						"folderPath": "/home/ernest/ftp/test_area"
 					},
 					"columnDelimiter": ",",
