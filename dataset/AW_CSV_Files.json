@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "SftpLocation",
-				"folderPath": "/home/ernest/ftp/test_area"
+				"folderPath": "/test_area"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
