@@ -21,7 +21,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "SftpReadSettings",
-							"recursive": true
+							"recursive": true,
+							"wildcardFolderPath": "home/ernest/ftp/test_area",
+							"wildcardFileName": "*.csv"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
