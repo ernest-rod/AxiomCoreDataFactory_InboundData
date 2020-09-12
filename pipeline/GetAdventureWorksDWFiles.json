@@ -1,0 +1,11 @@
+{
+	"name": "GetAdventureWorksDWFiles",
+	"properties": {
+		"description": "Get the AdventureWorks DW files from the SFTP.",
+		"concurrency": 1,
+		"folder": {
+			"name": "Axiom Pipelines/Test Area"
+		},
+		"annotations": []
+	}
+}
