@@ -1,0 +1,25 @@
+{
+	"name": "AW_CSV_Files",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Seagate",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/AdventureWorks"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "SftpLocation",
+				"fileName": "*.csv",
+				"folderPath": "/home/ernest/ftp/test_area"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
