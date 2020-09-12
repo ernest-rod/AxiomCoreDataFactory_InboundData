@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Axiom Datasets/AdventureWorks"
+			"name": "Axiom Datasets/AdventureWorks/DW"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
