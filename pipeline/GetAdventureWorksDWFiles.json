@@ -23,7 +23,7 @@
 							"type": "SftpReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "test_area",
-							"wildcardFileName": "*.csv"
+							"wildcardFileName": "*"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
