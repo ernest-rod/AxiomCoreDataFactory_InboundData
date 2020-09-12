@@ -13,7 +13,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "SftpLocation",
-				"fileName": "*.csv",
 				"folderPath": "/home/ernest/ftp/test_area"
 			},
 			"columnDelimiter": ",",
