@@ -15,11 +15,23 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_Inbound_Data'"
 		},
+		"Seagate_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Seagate'"
+		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ernest"
+		},
+		"Seagate_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "seagate.eastus.cloudapp.azure.com"
+		},
+		"Seagate_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "ernest"
 		},
@@ -37,7 +49,7 @@
 	},
 	"resources": [
 		{
-			"name": "ArmTemplate_0",
+			"name": "AxiomCoreDF2GetInboundDataFiles_ArmTemplate_0",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -56,11 +68,20 @@
 					"AzureBlobStorage_Inbound_Data_connectionString": {
 						"value": "[parameters('AzureBlobStorage_Inbound_Data_connectionString')]"
 					},
+					"Seagate_password": {
+						"value": "[parameters('Seagate_password')]"
+					},
 					"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 						"value": "[parameters('AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host')]"
 					},
 					"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
 						"value": "[parameters('AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName')]"
+					},
+					"Seagate_properties_typeProperties_host": {
+						"value": "[parameters('Seagate_properties_typeProperties_host')]"
+					},
+					"Seagate_properties_typeProperties_userName": {
+						"value": "[parameters('Seagate_properties_typeProperties_userName')]"
 					}
 				}
 			},

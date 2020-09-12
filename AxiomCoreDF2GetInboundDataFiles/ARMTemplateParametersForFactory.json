@@ -11,10 +11,19 @@
 		"AzureBlobStorage_Inbound_Data_connectionString": {
 			"value": ""
 		},
+		"Seagate_password": {
+			"value": ""
+		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"value": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
+			"value": "ernest"
+		},
+		"Seagate_properties_typeProperties_host": {
+			"value": "seagate.eastus.cloudapp.azure.com"
+		},
+		"Seagate_properties_typeProperties_userName": {
 			"value": "ernest"
 		}
 	}

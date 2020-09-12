@@ -15,11 +15,23 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_Inbound_Data'"
 		},
+		"Seagate_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Seagate'"
+		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ernest"
+		},
+		"Seagate_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "seagate.eastus.cloudapp.azure.com"
+		},
+		"Seagate_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "ernest"
 		}
@@ -189,6 +201,79 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/MoveAllFilesFromFTP')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Get all files from the FTP server into the inbound storage.",
+				"activities": [
+					{
+						"name": "Get_All_Text_Files",
+						"description": "Get all text files from FTP server.",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FtpReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "test_area",
+									"wildcardFileName": "*",
+									"useBinaryTransfer": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Source_TextDataFiles",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Destination_TextDataFiles",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "Axiom Pipelines/Test Area"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Source_TextDataFiles')]",
+				"[concat(variables('factoryId'), '/datasets/Destination_TextDataFiles')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AdventureWorksTransDataFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -285,6 +370,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Destination_TextDataFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "All data files from the FTP.",
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "All Files",
+						"container": "inbounddatafiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceDataset_gqw')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -334,6 +447,36 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Source_TextDataFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "All text files in test area in FTP server.",
+				"linkedServiceName": {
+					"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FtpServerLocation",
+						"folderPath": "test_area"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AxiomCore_VM_Seagate_SFtpServer')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AxiomCore_VM_Seagate_SFtpServer')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -370,15 +513,15 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/MoveAllFilesFromFTP')]",
+			"name": "[concat(parameters('factoryName'), '/GetAdventureWorksDWFiles')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Get all files from the FTP server into the inbound storage.",
+				"description": "Get the AdventureWorks DW files from the SFTP.",
 				"activities": [
 					{
-						"name": "Get_All_Text_Files",
-						"description": "Get all text files from FTP server.",
+						"name": "Get_AW_DW_Files",
+						"description": "Get Adventure Works DW files from Seagate SFTP",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -393,11 +536,8 @@
 							"source": {
 								"type": "DelimitedTextSource",
 								"storeSettings": {
-									"type": "FtpReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": "test_area",
-									"wildcardFileName": "*",
-									"useBinaryTransfer": true
+									"type": "SftpReadSettings",
+									"recursive": true
 								},
 								"formatSettings": {
 									"type": "DelimitedTextReadSettings"
@@ -406,61 +546,93 @@
 							"sink": {
 								"type": "DelimitedTextSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "MergeFiles"
 								},
 								"formatSettings": {
 									"type": "DelimitedTextWriteSettings",
 									"quoteAllText": true,
-									"fileExtension": ".txt"
+									"fileExtension": ".csv"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "Source_TextDataFiles",
+								"referenceName": "AW_CSV_Files",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "Destination_TextDataFiles",
+								"referenceName": "AW_DW_Files",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						]
 					}
 				],
+				"concurrency": 1,
 				"folder": {
 					"name": "Axiom Pipelines/Test Area"
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Source_TextDataFiles')]",
-				"[concat(variables('factoryId'), '/datasets/Destination_TextDataFiles')]"
+				"[concat(variables('factoryId'), '/datasets/AW_CSV_Files')]",
+				"[concat(variables('factoryId'), '/datasets/AW_DW_Files')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Source_TextDataFiles')]",
+			"name": "[concat(parameters('factoryName'), '/Seagate')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "SFTP Server",
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('Seagate_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('Seagate_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Seagate_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AW_CSV_Files')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "All text files in test area in FTP server.",
 				"linkedServiceName": {
-					"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
+					"referenceName": "Seagate",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Axiom Datasets/Test Area"
+					"name": "Axiom Datasets/AdventureWorks/DW"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
-						"type": "FtpServerLocation",
-						"folderPath": "test_area"
+						"type": "SftpLocation",
+						"fileName": "*.csv",
+						"folderPath": "/home/ernest/ftp/test_area"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -469,28 +641,24 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AxiomCore_VM_Seagate_SFtpServer')]"
+				"[concat(variables('factoryId'), '/linkedServices/Seagate')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Destination_TextDataFiles')]",
+			"name": "[concat(parameters('factoryName'), '/AW_DW_Files')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "All data files from the FTP.",
 				"linkedServiceName": {
 					"referenceName": "AzureBlobStorage_Inbound_Data",
 					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Axiom Datasets/Test Area"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"folderPath": "All Files",
+						"folderPath": "New Arrivals",
 						"container": "inbounddatafiles"
 					},
 					"columnDelimiter": ",",
