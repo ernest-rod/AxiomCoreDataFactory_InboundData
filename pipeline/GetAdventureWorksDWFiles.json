@@ -22,7 +22,7 @@
 						"storeSettings": {
 							"type": "SftpReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "home/ernest/ftp/test_area",
+							"wildcardFolderPath": "test_area",
 							"wildcardFileName": "*.csv"
 						},
 						"formatSettings": {
