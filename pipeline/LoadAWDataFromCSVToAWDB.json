@@ -144,7 +144,7 @@
 							{
 								"source": {
 									"name": "FinishedGoodsFlag",
-									"type": "Boolean",
+									"type": "Int32",
 									"physicalType": "String"
 								},
 								"sink": {
