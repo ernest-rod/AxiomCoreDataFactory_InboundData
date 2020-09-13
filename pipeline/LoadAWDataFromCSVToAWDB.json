@@ -60,7 +60,7 @@
 							{
 								"source": {
 									"name": "ProductSubcategoryKey",
-									"type": "String",
+									"type": "Int32",
 									"physicalType": "String"
 								},
 								"sink": {
