@@ -2,6 +2,9 @@
 	"name": "DFT_LoadDataIntoDB",
 	"properties": {
 		"description": "Load file data into the DB.",
+		"folder": {
+			"name": "Test Area/AdventureWorks"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
