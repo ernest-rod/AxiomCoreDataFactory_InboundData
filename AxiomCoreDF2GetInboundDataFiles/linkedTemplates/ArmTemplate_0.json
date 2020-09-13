@@ -247,6 +247,7 @@
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
+					"nullValue": "NULL",
 					"quoteChar": "\""
 				},
 				"schema": [
@@ -811,7 +812,7 @@
 									{
 										"source": {
 											"name": "ProductSubcategoryKey",
-											"type": "String",
+											"type": "Int32",
 											"physicalType": "String"
 										},
 										"sink": {
@@ -895,7 +896,7 @@
 									{
 										"source": {
 											"name": "FinishedGoodsFlag",
-											"type": "String",
+											"type": "Int16",
 											"physicalType": "String"
 										},
 										"sink": {
@@ -1183,7 +1184,7 @@
 									{
 										"source": {
 											"name": "StartDate",
-											"type": "String",
+											"type": "DateTime",
 											"physicalType": "String"
 										},
 										"sink": {
@@ -1195,7 +1196,7 @@
 									{
 										"source": {
 											"name": "EndDate",
-											"type": "String",
+											"type": "DateTime",
 											"physicalType": "String"
 										},
 										"sink": {
