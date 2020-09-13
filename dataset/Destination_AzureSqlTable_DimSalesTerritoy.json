@@ -1,0 +1,47 @@
+{
+	"name": "Destination_AzureSqlTable_DimSalesTerritoy",
+	"properties": {
+		"description": "Table DimSalesTerritory in AdventureWorks DB",
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_AdventureWorksDW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/Test Area/AdventureWorks"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SalesTerritoryKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SalesTerritoryAlternateKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SalesTerritoryRegion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesTerritoryCountry",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesTerritoryGroup",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesTerritoryImage",
+				"type": "varbinary"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimSalesTerritory"
+		}
+	}
+}
