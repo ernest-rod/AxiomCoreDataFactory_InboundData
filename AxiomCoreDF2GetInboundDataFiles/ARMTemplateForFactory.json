@@ -128,7 +128,7 @@
 				"description": "Get data from AW csv files and load them into AW database.",
 				"activities": [
 					{
-						"name": "dataflow1",
+						"name": "DFT_LoadDataIntoDB",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
@@ -800,6 +800,9 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"description": "Load file data into the DB.",
+				"folder": {
+					"name": "Test Area/AdventureWorks"
+				},
 				"type": "MappingDataFlow",
 				"typeProperties": {
 					"sources": [
