@@ -1,0 +1,9 @@
+{
+	"name": "LoadAWDataFromCSVToAWDB",
+	"properties": {
+		"folder": {
+			"name": "Axiom Pipelines/Test Area"
+		},
+		"annotations": []
+	}
+}
