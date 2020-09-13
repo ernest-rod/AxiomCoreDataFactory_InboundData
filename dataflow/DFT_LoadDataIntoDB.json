@@ -1,6 +1,7 @@
 {
-	"name": "dataflow1",
+	"name": "DFT_LoadDataIntoDB",
 	"properties": {
+		"description": "Load file data into the DB.",
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
