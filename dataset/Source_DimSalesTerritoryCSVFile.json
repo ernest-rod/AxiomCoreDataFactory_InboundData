@@ -1,0 +1,54 @@
+{
+	"name": "Source_DimSalesTerritoryCSVFile",
+	"properties": {
+		"description": "Dim Sales Territory Data File.",
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_Inbound_Data",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/Test Area/AdventureWorks"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "DimSalesTerritory.csv",
+				"folderPath": "All Files",
+				"container": "inbounddatafiles"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"nullValue": "NULL",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "SalesTerritoryKey",
+				"type": "String"
+			},
+			{
+				"name": "SalesTerritoryAlternateKey",
+				"type": "String"
+			},
+			{
+				"name": "SalesTerritoryRegion",
+				"type": "String"
+			},
+			{
+				"name": "SalesTerritoryCountry",
+				"type": "String"
+			},
+			{
+				"name": "SalesTerritoryGroup",
+				"type": "String"
+			},
+			{
+				"name": "SalesTerritoryImage",
+				"type": "String"
+			}
+		]
+	}
+}
