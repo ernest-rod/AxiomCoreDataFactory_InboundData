@@ -4,7 +4,7 @@
 		"description": "Get data from AW csv files and load them into AW database.",
 		"activities": [
 			{
-				"name": "dataflow1",
+				"name": "DFT_LoadDataIntoDB",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
