@@ -1,6 +1,7 @@
 {
 	"name": "Source_DimProduct_CSVFile",
 	"properties": {
+		"description": "Product Dimension Data File.",
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_Inbound_Data",
 			"type": "LinkedServiceReference"
