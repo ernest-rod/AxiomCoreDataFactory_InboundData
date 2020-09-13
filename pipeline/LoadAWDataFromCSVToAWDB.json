@@ -1,6 +1,7 @@
 {
 	"name": "LoadAWDataFromCSVToAWDB",
 	"properties": {
+		"description": "Get data from AW csv files and load them into AW database.",
 		"folder": {
 			"name": "Axiom Pipelines/Test Area"
 		},
