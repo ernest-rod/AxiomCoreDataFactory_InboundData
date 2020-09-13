@@ -23,7 +23,7 @@
 							"type": "FtpReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "test_area",
-							"wildcardFileName": "*",
+							"wildcardFileName": "*.csv",
 							"useBinaryTransfer": true
 						},
 						"formatSettings": {
