@@ -1,5 +1,5 @@
 {
-	"name": "Source_DimSalesTerritoryCSVFile",
+	"name": "Source_DimSalesTerritory_CSVFile",
 	"properties": {
 		"description": "Dim Sales Territory Data File.",
 		"linkedServiceName": {
