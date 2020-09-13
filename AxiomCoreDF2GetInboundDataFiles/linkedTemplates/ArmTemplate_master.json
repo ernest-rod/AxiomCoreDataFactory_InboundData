@@ -15,23 +15,15 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_Inbound_Data'"
 		},
-		"Seagate_password": {
+		"AzureSqlDatabase_AdventureWorksDW_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'Seagate'"
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorksDW'"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ernest"
-		},
-		"Seagate_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "seagate.eastus.cloudapp.azure.com"
-		},
-		"Seagate_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "ernest"
 		},
@@ -68,20 +60,14 @@
 					"AzureBlobStorage_Inbound_Data_connectionString": {
 						"value": "[parameters('AzureBlobStorage_Inbound_Data_connectionString')]"
 					},
-					"Seagate_password": {
-						"value": "[parameters('Seagate_password')]"
+					"AzureSqlDatabase_AdventureWorksDW_connectionString": {
+						"value": "[parameters('AzureSqlDatabase_AdventureWorksDW_connectionString')]"
 					},
 					"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 						"value": "[parameters('AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host')]"
 					},
 					"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
 						"value": "[parameters('AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName')]"
-					},
-					"Seagate_properties_typeProperties_host": {
-						"value": "[parameters('Seagate_properties_typeProperties_host')]"
-					},
-					"Seagate_properties_typeProperties_userName": {
-						"value": "[parameters('Seagate_properties_typeProperties_userName')]"
 					}
 				}
 			},
