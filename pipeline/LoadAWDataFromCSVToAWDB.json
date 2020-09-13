@@ -144,7 +144,7 @@
 							{
 								"source": {
 									"name": "FinishedGoodsFlag",
-									"type": "String",
+									"type": "Boolean",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -432,7 +432,7 @@
 							{
 								"source": {
 									"name": "StartDate",
-									"type": "String",
+									"type": "DateTime",
 									"physicalType": "String"
 								},
 								"sink": {
@@ -444,7 +444,7 @@
 							{
 								"source": {
 									"name": "EndDate",
-									"type": "String",
+									"type": "DateTime",
 									"physicalType": "String"
 								},
 								"sink": {
