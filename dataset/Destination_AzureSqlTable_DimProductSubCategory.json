@@ -1,0 +1,48 @@
+{
+	"name": "Destination_AzureSqlTable_DimProductSubCategory",
+	"properties": {
+		"description": "Table DimProductSubCategory in AdventureWorks DB",
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_AdventureWorksDW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/Test Area/AdventureWorks"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ProductSubcategoryKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ProductSubcategoryAlternateKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EnglishProductSubcategoryName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SpanishProductSubcategoryName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FrenchProductSubcategoryName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ProductCategoryKey",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimProductSubcategory"
+		}
+	}
+}
