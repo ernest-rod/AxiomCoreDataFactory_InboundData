@@ -15,7 +15,6 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
@@ -41,7 +40,8 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"parallelCopies": 1
 				},
 				"inputs": [
 					{
@@ -57,6 +57,12 @@
 				]
 			}
 		],
+		"parameters": {
+			"Start": {
+				"type": "int",
+				"defaultValue": 0
+			}
+		},
 		"folder": {
 			"name": "Axiom Pipelines/Test Area"
 		},
