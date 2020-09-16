@@ -15,6 +15,12 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [
+					{
+						"name": "",
+						"value": ""
+					}
+				],
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
