@@ -610,6 +610,59 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Destination_AzureSqlTable_DimProductSubCategory')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Table DimProductSubCategory in AdventureWorks DB",
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_AdventureWorksDW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ProductSubcategoryKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductSubcategoryAlternateKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EnglishProductSubcategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SpanishProductSubcategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FrenchProductSubcategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductCategoryKey",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimProductSubcategory"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorksDW')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Destination_AzureSqlTable_DimSalesTerritoy')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1221,6 +1274,65 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Source_DimProductSubCategory_CSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Product Sub Category Dimension Data File.",
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "DimProductSubCategory.csv",
+						"folderPath": "All Files",
+						"container": "inbounddatafiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "NULL",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProductSubcategoryKey",
+						"type": "String"
+					},
+					{
+						"name": "ProductSubcategoryAlternateKey",
+						"type": "String"
+					},
+					{
+						"name": "EnglishProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "SpanishProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "FrenchProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "ProductCategoryKey",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Source_DimProduct_CSVFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1589,95 +1701,6 @@
 					},
 					{
 						"name": "ShipDate",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Source_TextDataFiles')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "All text files in test area in FTP server.",
-				"linkedServiceName": {
-					"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Axiom Datasets/Test Area"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation",
-						"folderPath": "test_area"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AxiomCore_VM_Seagate_SFtpServer')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Source_DimProductSubCategory_CSVFile')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Product Sub Category Dimension Data File.",
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_Inbound_Data",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Axiom Datasets/Test Area/AdventureWorks"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "DimProductSubCategory.csv",
-						"folderPath": "All Files",
-						"container": "inbounddatafiles"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"nullValue": "NULL",
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "ProductSubcategoryKey",
-						"type": "String"
-					},
-					{
-						"name": "ProductSubcategoryAlternateKey",
-						"type": "String"
-					},
-					{
-						"name": "EnglishProductSubcategoryName",
-						"type": "String"
-					},
-					{
-						"name": "SpanishProductSubcategoryName",
-						"type": "String"
-					},
-					{
-						"name": "FrenchProductSubcategoryName",
-						"type": "String"
-					},
-					{
-						"name": "ProductCategoryKey",
 						"type": "String"
 					}
 				]
