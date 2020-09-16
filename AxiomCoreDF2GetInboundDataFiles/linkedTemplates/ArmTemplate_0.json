@@ -262,6 +262,120 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Destination_AzureSqlTable_DimDate')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Table DimDate in AdventureWorks DB",
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_AdventureWorksDW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DateKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "FullDateAlternateKey",
+						"type": "date"
+					},
+					{
+						"name": "DayNumberOfWeek",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "EnglishDayNameOfWeek",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SpanishDayNameOfWeek",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FrenchDayNameOfWeek",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DayNumberOfMonth",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "DayNumberOfYear",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "WeekNumberOfYear",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "EnglishMonthName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SpanishMonthName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FrenchMonthName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MonthNumberOfYear",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "CalendarQuarter",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "CalendarYear",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "CalendarSemester",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "FiscalQuarter",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "FiscalYear",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "FiscalSemester",
+						"type": "tinyint",
+						"precision": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimDate"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorksDW')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Destination_AzureSqlTable_DimProduct')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -942,6 +1056,116 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Source_DimDate_CSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Dimension Date Data File",
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "DimDate.csv",
+						"folderPath": "All Files",
+						"container": "inbounddatafiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "DateKey",
+						"type": "String"
+					},
+					{
+						"name": "FullDateAlternateKey",
+						"type": "String"
+					},
+					{
+						"name": "DayNumberOfWeek",
+						"type": "String"
+					},
+					{
+						"name": "EnglishDayNameOfWeek",
+						"type": "String"
+					},
+					{
+						"name": "SpanishDayNameOfWeek",
+						"type": "String"
+					},
+					{
+						"name": "FrenchDayNameOfWeek",
+						"type": "String"
+					},
+					{
+						"name": "DayNumberOfMonth",
+						"type": "String"
+					},
+					{
+						"name": "DayNumberOfYear",
+						"type": "String"
+					},
+					{
+						"name": "WeekNumberOfYear",
+						"type": "String"
+					},
+					{
+						"name": "EnglishMonthName",
+						"type": "String"
+					},
+					{
+						"name": "SpanishMonthName",
+						"type": "String"
+					},
+					{
+						"name": "FrenchMonthName",
+						"type": "String"
+					},
+					{
+						"name": "MonthNumberOfYear",
+						"type": "String"
+					},
+					{
+						"name": "CalendarQuarter",
+						"type": "String"
+					},
+					{
+						"name": "CalendarYear",
+						"type": "String"
+					},
+					{
+						"name": "CalendarSemester",
+						"type": "String"
+					},
+					{
+						"name": "FiscalQuarter",
+						"type": "String"
+					},
+					{
+						"name": "FiscalYear",
+						"type": "String"
+					},
+					{
+						"name": "FiscalSemester",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Source_DimProductCategory_CSVFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1404,11 +1628,11 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Source_DimDate_CSVFile')]",
+			"name": "[concat(parameters('factoryName'), '/Source_DimProductSubCategory_CSVFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Dimension Date Data File",
+				"description": "Product Sub Category Dimension Data File.",
 				"linkedServiceName": {
 					"referenceName": "AzureBlobStorage_Inbound_Data",
 					"type": "LinkedServiceReference"
@@ -1421,7 +1645,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "DimDate.csv",
+						"fileName": "DimProductSubCategory.csv",
 						"folderPath": "All Files",
 						"container": "inbounddatafiles"
 					},
@@ -1433,286 +1657,32 @@
 				},
 				"schema": [
 					{
-						"name": "DateKey",
+						"name": "ProductSubcategoryKey",
 						"type": "String"
 					},
 					{
-						"name": "FullDateAlternateKey",
+						"name": "ProductSubcategoryAlternateKey",
 						"type": "String"
 					},
 					{
-						"name": "DayNumberOfWeek",
+						"name": "EnglishProductSubcategoryName",
 						"type": "String"
 					},
 					{
-						"name": "EnglishDayNameOfWeek",
+						"name": "SpanishProductSubcategoryName",
 						"type": "String"
 					},
 					{
-						"name": "SpanishDayNameOfWeek",
+						"name": "FrenchProductSubcategoryName",
 						"type": "String"
 					},
 					{
-						"name": "FrenchDayNameOfWeek",
-						"type": "String"
-					},
-					{
-						"name": "DayNumberOfMonth",
-						"type": "String"
-					},
-					{
-						"name": "DayNumberOfYear",
-						"type": "String"
-					},
-					{
-						"name": "WeekNumberOfYear",
-						"type": "String"
-					},
-					{
-						"name": "EnglishMonthName",
-						"type": "String"
-					},
-					{
-						"name": "SpanishMonthName",
-						"type": "String"
-					},
-					{
-						"name": "FrenchMonthName",
-						"type": "String"
-					},
-					{
-						"name": "MonthNumberOfYear",
-						"type": "String"
-					},
-					{
-						"name": "CalendarQuarter",
-						"type": "String"
-					},
-					{
-						"name": "CalendarYear",
-						"type": "String"
-					},
-					{
-						"name": "CalendarSemester",
-						"type": "String"
-					},
-					{
-						"name": "FiscalQuarter",
-						"type": "String"
-					},
-					{
-						"name": "FiscalYear",
-						"type": "String"
-					},
-					{
-						"name": "FiscalSemester",
+						"name": "ProductCategoryKey",
 						"type": "String"
 					}
 				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Destination_AzureSqlTable_DimDate')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Table DimDate in AdventureWorks DB",
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorksDW",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Axiom Datasets/Test Area/AdventureWorks"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "DateKey",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "FullDateAlternateKey",
-						"type": "date"
-					},
-					{
-						"name": "DayNumberOfWeek",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "EnglishDayNameOfWeek",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SpanishDayNameOfWeek",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FrenchDayNameOfWeek",
-						"type": "nvarchar"
-					},
-					{
-						"name": "DayNumberOfMonth",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "DayNumberOfYear",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "WeekNumberOfYear",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "EnglishMonthName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SpanishMonthName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FrenchMonthName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MonthNumberOfYear",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "CalendarQuarter",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "CalendarYear",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "CalendarSemester",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "FiscalQuarter",
-						"type": "tinyint",
-						"precision": 3
-					},
-					{
-						"name": "FiscalYear",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "FiscalSemester",
-						"type": "tinyint",
-						"precision": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "DimDate"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_AdventureWorksDW')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CopyPipeline_gqw')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_gqw",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "test_area/readme.txt"
-							},
-							{
-								"name": "Destination",
-								"value": "inbounddatafiles/New Arrivals/"
-							}
-						],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "FtpReadSettings",
-									"recursive": true,
-									"useBinaryTransfer": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings",
-									"skipLineCount": "0"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"redirectIncompatibleRowSettings": {
-								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_Inbound_Data",
-									"type": "LinkedServiceReference"
-								},
-								"path": "inbounddatafiles/Logs"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SourceDataset_gqw",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DestinationDataset_gqw",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "Axiom Pipelines/Test Area"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceDataset_gqw')]",
-				"[concat(variables('factoryId'), '/datasets/DestinationDataset_gqw')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
 			]
 		}

@@ -13,211 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Destination_AzureSqlTable_DimProductSubCategory')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Table DimProductSubCategory in AdventureWorks DB",
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_AdventureWorksDW",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Axiom Datasets/Test Area/AdventureWorks"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ProductSubcategoryKey",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductSubcategoryAlternateKey",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "EnglishProductSubcategoryName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SpanishProductSubcategoryName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FrenchProductSubcategoryName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ProductCategoryKey",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "DimProductSubcategory"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CopyPipeline_gqw')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_gqw",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "test_area/readme.txt"
-							},
-							{
-								"name": "Destination",
-								"value": "inbounddatafiles/New Arrivals/"
-							}
-						],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "FtpReadSettings",
-									"recursive": true,
-									"useBinaryTransfer": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings",
-									"skipLineCount": "0"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"redirectIncompatibleRowSettings": {
-								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_Inbound_Data",
-									"type": "LinkedServiceReference"
-								},
-								"path": "inbounddatafiles/Logs"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SourceDataset_gqw",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DestinationDataset_gqw",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "Axiom Pipelines/Test Area"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MoveAllFilesFromFTP')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Get all files from the FTP server into the inbound storage.",
-				"activities": [
-					{
-						"name": "Get_All_Text_Files",
-						"description": "Get all text files from FTP server.",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "FtpReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": "test_area",
-									"wildcardFileName": "*.csv",
-									"useBinaryTransfer": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "Source_TextDataFiles",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Destination_TextDataFiles",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "Axiom Pipelines/Test Area"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/DFT_LoadDataIntoDB')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -335,66 +130,117 @@
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Source_DimProductSubCategory_CSVFile')]",
 				"[concat(variables('factoryId'), '/datasets/Destination_AzureSqlTable_DimProductSubCategory')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LoadAWDataFromCSVToAWDB')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/Source_DimProductSubCategory_CSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Get data from AW csv files and load them into AW database.",
-				"activities": [
+				"description": "Product Sub Category Dimension Data File.",
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "DimProductSubCategory.csv",
+						"folderPath": "All Files",
+						"container": "inbounddatafiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "NULL",
+					"quoteChar": "\""
+				},
+				"schema": [
 					{
-						"name": "DFT_LoadDataIntoDB",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "DFT_LoadDataIntoDB",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"SRCDimProductData": {},
-									"SRCDimCustomerData": {},
-									"SRCFactInternetSalesData": {},
-									"SRCDimSalesTerritoryData": {},
-									"SRCDimProductCategoryData": {},
-									"SRCDimDateData": {},
-									"SRCDimProductSubCategoryData": {},
-									"SNKDimProductData": {},
-									"SNKDimCustomerData": {},
-									"SNKFactInternetSalesData": {},
-									"SNKDimSalesTerritoryData": {},
-									"SNKDimProductCategoryData": {},
-									"SNKDimDateData": {},
-									"SNKDimProductSubCategoryData": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							}
-						}
+						"name": "ProductSubcategoryKey",
+						"type": "String"
+					},
+					{
+						"name": "ProductSubcategoryAlternateKey",
+						"type": "String"
+					},
+					{
+						"name": "EnglishProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "SpanishProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "FrenchProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "ProductCategoryKey",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Destination_AzureSqlTable_DimProductSubCategory')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Table DimProductSubCategory in AdventureWorks DB",
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_AdventureWorksDW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ProductSubcategoryKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductSubcategoryAlternateKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EnglishProductSubcategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SpanishProductSubcategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FrenchProductSubcategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductCategoryKey",
+						"type": "int",
+						"precision": 10
 					}
 				],
-				"folder": {
-					"name": "Axiom Pipelines/Test Area"
-				},
-				"annotations": []
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimProductSubcategory"
+				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/DFT_LoadDataIntoDB')]"
-			]
+			"dependsOn": []
 		}
 	]
 }
