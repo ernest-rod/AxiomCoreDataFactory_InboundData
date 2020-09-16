@@ -135,7 +135,14 @@
 						"name": "Get_All_Text_Files",
 						"description": "Get all text files from FTP server.",
 						"type": "Copy",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "WaitUntilStarted",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -186,6 +193,18 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "WaitUntilStarted",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": {
+								"value": "@pipeline().parameters.Start",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"parameters": {
