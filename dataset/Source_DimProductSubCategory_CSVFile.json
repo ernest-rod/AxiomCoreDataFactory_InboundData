@@ -1,0 +1,53 @@
+{
+	"name": "Source_DimProductSubCategory_CSVFile",
+	"properties": {
+		"description": "Product Sub Category Dimension Data File.",
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_Inbound_Data",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/Test Area/AdventureWorks"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "DimProductSubCategory.csv",
+				"folderPath": "All Files",
+				"container": "inbounddatafiles"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ProductSubcategoryKey",
+				"type": "String"
+			},
+			{
+				"name": "ProductSubcategoryAlternateKey",
+				"type": "String"
+			},
+			{
+				"name": "EnglishProductSubcategoryName",
+				"type": "String"
+			},
+			{
+				"name": "SpanishProductSubcategoryName",
+				"type": "String"
+			},
+			{
+				"name": "FrenchProductSubcategoryName",
+				"type": "String"
+			},
+			{
+				"name": "ProductCategoryKey",
+				"type": "String"
+			}
+		]
+	}
+}
