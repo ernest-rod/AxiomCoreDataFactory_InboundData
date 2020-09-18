@@ -84,7 +84,7 @@
 			},
 			"Result": {
 				"type": "string",
-				"defaultValue": "Succeded"
+				"defaultValue": "Successful"
 			}
 		},
 		"folder": {
