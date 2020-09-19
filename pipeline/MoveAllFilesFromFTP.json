@@ -81,10 +81,6 @@
 			"Start": {
 				"type": "int",
 				"defaultValue": 0
-			},
-			"Result": {
-				"type": "string",
-				"defaultValue": "Successful"
 			}
 		},
 		"folder": {
