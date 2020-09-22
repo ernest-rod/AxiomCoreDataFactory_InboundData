@@ -1,0 +1,10 @@
+{
+	"name": "CopyDataFilesFromSeagate",
+	"properties": {
+		"description": "Get the customer's data files from SFTP Seagate.",
+		"folder": {
+			"name": "Axiom Pipelines/Production"
+		},
+		"annotations": []
+	}
+}
