@@ -20,7 +20,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@pipeline().parameters.SQLFunc_GetCollections",
+							"value": "@pipeline().parameters.SQLQuery_GetCollections",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -35,7 +35,7 @@
 			}
 		],
 		"parameters": {
-			"SQLFunc_GetCollections": {
+			"SQLQuery_GetCollections": {
 				"type": "string",
 				"defaultValue": "SELECT * FROM dbo.get_customer_active_arrival_collections(1);"
 			}
