@@ -1,0 +1,23 @@
+{
+	"name": "SrcDataFiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/Production"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FtpServerLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
