@@ -5,6 +5,11 @@
 			"referenceName": "AzureBlobStorage_Inbound_Data",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"test": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "Axiom Datasets/Production"
 		},
