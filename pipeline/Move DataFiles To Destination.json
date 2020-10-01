@@ -30,6 +30,25 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Iterate Each Data File",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Container For The Collection",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Container For The Collection').output.value",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
