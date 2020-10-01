@@ -4,7 +4,7 @@
 		"description": "Get the customer's data files from SFTP Seagate.",
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Get Collections",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
