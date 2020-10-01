@@ -63,7 +63,18 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "SrcArrivalCollections",
+									"type": "DatasetReference"
+								}
+							}
 						}
 					]
 				}
@@ -73,6 +84,10 @@
 			"SQLQuery_GetCollections": {
 				"type": "string",
 				"defaultValue": "SELECT * FROM dbo.get_customer_active_arrival_collections(1);"
+			},
+			"SQLQuery_GetContainers": {
+				"type": "string",
+				"defaultValue": "SELECT * FROM dbo.get_collection_containers(2)"
 			}
 		},
 		"folder": {
