@@ -86,14 +86,6 @@
 			}
 		],
 		"parameters": {
-			"SQLQuery_GetCollections": {
-				"type": "string",
-				"defaultValue": "SELECT * FROM dbo.get_customer_active_arrival_collections(1);"
-			},
-			"SQLQuery_GetContainers": {
-				"type": "string",
-				"defaultValue": "SELECT * FROM dbo.get_collection_containers(2)"
-			},
 			"CustomerID": {
 				"type": "int",
 				"defaultValue": 1
