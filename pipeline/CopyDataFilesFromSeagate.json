@@ -89,7 +89,8 @@
 				"defaultValue": 1
 			},
 			"DestinationPath": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "/New Arrivals"
 			}
 		},
 		"folder": {
