@@ -32,6 +32,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"CollectionID": {
+				"type": "int"
+			}
+		},
 		"folder": {
 			"name": "Axiom Pipelines/Production"
 		},
