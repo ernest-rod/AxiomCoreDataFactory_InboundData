@@ -20,7 +20,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@pipeline().parameters.SQLQuery_GetCollections",
+							"value": "SELECT\n    Collection_ID,\n    Collection_Name,\n    Location_Identifier,\n    Location_Idenyifier_Descriptor,\n    Location_Idenyifier_Code\nFROM \n    dbo.get_customer_active_arrival_collections(@pipeline().parameters.CustomerID)\n;\n",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -96,7 +96,7 @@
 			},
 			"CustomerID": {
 				"type": "int",
-				"defaultValue": 0
+				"defaultValue": 1
 			}
 		},
 		"folder": {
