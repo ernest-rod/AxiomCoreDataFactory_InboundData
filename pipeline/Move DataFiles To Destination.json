@@ -113,7 +113,11 @@
 									"referenceName": "DstDataFiles",
 									"type": "DatasetReference",
 									"parameters": {
-										"BlobContainer": "inbounddatafiles"
+										"BlobContainer": "inbounddatafiles",
+										"Directory": {
+											"value": "@pipeline().parameters.DestinationLocation",
+											"type": "Expression"
+										}
 									}
 								}
 							]
