@@ -6,7 +6,10 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"test": {
+			"BlobContainer": {
+				"type": "string"
+			},
+			"Directory": {
 				"type": "string"
 			}
 		},
