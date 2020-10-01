@@ -72,6 +72,9 @@
 		"parameters": {
 			"CollectionID": {
 				"type": "int"
+			},
+			"CollectionLocation": {
+				"type": "string"
 			}
 		},
 		"folder": {
