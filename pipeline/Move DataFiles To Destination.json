@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT\n   Container_ID,\n   Container_Name,\n   Container_Source_System\nFROM\n   dbo.get_collection_containers(@{item().Collection_ID})\n",
+							"value": "SELECT\n   Container_ID,\n   Container_Name,\n   Container_Source_System\nFROM\n   dbo.get_collection_containers(@{pipeline().parameters.CollectionID})",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
