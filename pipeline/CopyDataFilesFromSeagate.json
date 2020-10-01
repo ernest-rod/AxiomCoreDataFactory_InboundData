@@ -93,6 +93,10 @@
 			"SQLQuery_GetContainers": {
 				"type": "string",
 				"defaultValue": "SELECT * FROM dbo.get_collection_containers(2)"
+			},
+			"CustomerID": {
+				"type": "int",
+				"defaultValue": 0
 			}
 		},
 		"folder": {
