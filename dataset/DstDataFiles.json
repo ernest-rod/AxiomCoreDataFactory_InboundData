@@ -1,0 +1,24 @@
+{
+	"name": "DstDataFiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_Inbound_Data",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/Production"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
