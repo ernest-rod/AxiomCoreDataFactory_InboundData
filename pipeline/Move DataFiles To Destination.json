@@ -62,8 +62,30 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "FtpReadSettings",
+										"recursive": true,
+										"wildcardFolderPath": {
+											"value": "@pipeline().parameters.CollectionLocation",
+											"type": "Expression"
+										},
+										"wildcardFileName": "*",
+										"useBinaryTransfer": true
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
 								"enableStaging": false
-							}
+							},
+							"inputs": [
+								{
+									"referenceName": "SrcDataFiles",
+									"type": "DatasetReference"
+								}
+							]
 						}
 					]
 				}
