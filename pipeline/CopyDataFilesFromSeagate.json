@@ -68,7 +68,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@pipeline().parameters.SQLQuery_GetContainers",
+										"value": "SELECT\n   Container_ID,\n   Container_Name,\n   Container_Source_System\nFROM\n   dbo.get_collection_containers(2)\n",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -77,7 +77,8 @@
 								"dataset": {
 									"referenceName": "SrcArrivalCollections",
 									"type": "DatasetReference"
-								}
+								},
+								"firstRowOnly": false
 							}
 						}
 					]
