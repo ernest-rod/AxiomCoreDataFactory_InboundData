@@ -67,6 +67,10 @@
 									"CollectionID": {
 										"value": "@{item().Collection_ID}",
 										"type": "Expression"
+									},
+									"CollectionLocation": {
+										"value": "@{item().Location_Identifier}",
+										"type": "Expression"
 									}
 								}
 							}
