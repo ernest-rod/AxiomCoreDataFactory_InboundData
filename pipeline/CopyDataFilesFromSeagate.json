@@ -32,6 +32,19 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Iterate Customer Arrival Collections",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Active Arrival Collections",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"parameters": {
