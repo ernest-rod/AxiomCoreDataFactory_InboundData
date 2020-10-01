@@ -14,6 +14,9 @@
 		"AzureSqlDatabase_AdventureWorksDW_connectionString": {
 			"value": ""
 		},
+		"AxiomSQLDatabase_connectionString": {
+			"value": ""
+		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"value": "seagate.eastus.cloudapp.azure.com"
 		},

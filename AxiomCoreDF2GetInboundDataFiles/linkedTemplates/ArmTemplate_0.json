@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorksDW'"
 		},
+		"AxiomSQLDatabase_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AxiomSQLDatabase'"
+		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "seagate.eastus.cloudapp.azure.com"
@@ -78,6 +82,30 @@
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureSqlDatabase_AdventureWorksDW_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AxiomSQLDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"Database": {
+						"type": "string"
+					},
+					"User": {
+						"type": "string"
+					},
+					"Password": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AxiomSQLDatabase_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -1562,145 +1590,6 @@
 					},
 					{
 						"name": "SalesTerritoryImage",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Source_FactInternetSales_CSVFile')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Fact Sales Data File.",
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_Inbound_Data",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Axiom Datasets/Test Area/AdventureWorks"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "FactInternetSales.csv",
-						"folderPath": "All Files",
-						"container": "inbounddatafiles"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"nullValue": "NULL",
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "ProductKey",
-						"type": "String"
-					},
-					{
-						"name": "OrderDateKey",
-						"type": "String"
-					},
-					{
-						"name": "DueDateKey",
-						"type": "String"
-					},
-					{
-						"name": "ShipDateKey",
-						"type": "String"
-					},
-					{
-						"name": "CustomerKey",
-						"type": "String"
-					},
-					{
-						"name": "PromotionKey",
-						"type": "String"
-					},
-					{
-						"name": "CurrencyKey",
-						"type": "String"
-					},
-					{
-						"name": "SalesTerritoryKey",
-						"type": "String"
-					},
-					{
-						"name": "SalesOrderNumber",
-						"type": "String"
-					},
-					{
-						"name": "SalesOrderLineNumber",
-						"type": "String"
-					},
-					{
-						"name": "RevisionNumber",
-						"type": "String"
-					},
-					{
-						"name": "OrderQuantity",
-						"type": "String"
-					},
-					{
-						"name": "UnitPrice",
-						"type": "String"
-					},
-					{
-						"name": "ExtendedAmount",
-						"type": "String"
-					},
-					{
-						"name": "UnitPriceDiscountPct",
-						"type": "String"
-					},
-					{
-						"name": "DiscountAmount",
-						"type": "String"
-					},
-					{
-						"name": "ProductStandardCost",
-						"type": "String"
-					},
-					{
-						"name": "TotalProductCost",
-						"type": "String"
-					},
-					{
-						"name": "SalesAmount",
-						"type": "String"
-					},
-					{
-						"name": "TaxAmt",
-						"type": "String"
-					},
-					{
-						"name": "Freight",
-						"type": "String"
-					},
-					{
-						"name": "CarrierTrackingNumber",
-						"type": "String"
-					},
-					{
-						"name": "CustomerPONumber",
-						"type": "String"
-					},
-					{
-						"name": "OrderDate",
-						"type": "String"
-					},
-					{
-						"name": "DueDate",
-						"type": "String"
-					},
-					{
-						"name": "ShipDate",
 						"type": "String"
 					}
 				]
