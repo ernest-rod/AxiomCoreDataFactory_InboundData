@@ -128,6 +128,9 @@
 			},
 			"CollectionLocation": {
 				"type": "string"
+			},
+			"DestinationLocation": {
+				"type": "string"
 			}
 		},
 		"folder": {
