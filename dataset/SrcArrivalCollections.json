@@ -1,0 +1,24 @@
+{
+	"name": "SrcArrivalCollections",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AxiomSQLDatabase",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"Database": "Poseidon",
+				"User": "Ernest",
+				"Password": "Nebadon@1515"
+			}
+		},
+		"folder": {
+			"name": "Axiom Datasets/Production"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "get_customer_active_arrival_collections(1)"
+		}
+	}
+}
