@@ -19,7 +19,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT * FROM dbo.get_customer_active_arrival_collections(1)",
+						"sqlReaderQuery": "SELECT * FROM dbo.get_customer_active_arrival_collections(1);",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
