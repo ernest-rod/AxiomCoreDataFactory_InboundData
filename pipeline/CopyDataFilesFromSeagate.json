@@ -53,7 +53,7 @@
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Lookup1",
+							"name": "Get Container For The Collection",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
