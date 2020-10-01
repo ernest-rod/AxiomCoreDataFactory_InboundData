@@ -5,6 +5,11 @@
 			"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"test": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "Axiom Datasets/Production"
 		},
