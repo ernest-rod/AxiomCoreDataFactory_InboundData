@@ -71,6 +71,10 @@
 									"CollectionLocation": {
 										"value": "@{item().Location_Identifier}",
 										"type": "Expression"
+									},
+									"DestinationLocation": {
+										"value": "@pipeline().parameters.DestinationPath",
+										"type": "Expression"
 									}
 								}
 							}
