@@ -53,32 +53,22 @@
 					"isSequential": false,
 					"activities": [
 						{
-							"name": "Get Container For The Collection",
-							"type": "Lookup",
+							"name": "Execute Movement of DataFiles Into Destination",
+							"type": "ExecutePipeline",
 							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "SELECT\n   Container_ID,\n   Container_Name,\n   Container_Source_System\nFROM\n   dbo.get_collection_containers(@{item().Collection_ID})\n",
+								"pipeline": {
+									"referenceName": "Move DataFiles To Destination",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"CollectionID": {
+										"value": "@{item().Collection_ID}",
 										"type": "Expression"
-									},
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"dataset": {
-									"referenceName": "SrcArrivalCollections",
-									"type": "DatasetReference"
-								},
-								"firstRowOnly": false
+									}
+								}
 							}
 						}
 					]
