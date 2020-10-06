@@ -50,7 +50,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "Move Data File To Destination",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
