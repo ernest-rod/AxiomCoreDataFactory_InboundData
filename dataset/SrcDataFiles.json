@@ -2,7 +2,7 @@
 	"name": "SrcDataFiles",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AxiomCore_VM_Seagate_SFtpServer",
+			"referenceName": "AxiomCore_Sftp",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
@@ -12,7 +12,7 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "FtpServerLocation"
+				"type": "SftpLocation"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
