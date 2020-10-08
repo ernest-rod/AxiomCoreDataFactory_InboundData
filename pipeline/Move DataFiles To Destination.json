@@ -65,17 +65,9 @@
 								"source": {
 									"type": "DelimitedTextSource",
 									"storeSettings": {
-										"type": "FtpReadSettings",
+										"type": "SftpReadSettings",
 										"recursive": true,
-										"wildcardFolderPath": {
-											"value": "@pipeline().parameters.CollectionLocation",
-											"type": "Expression"
-										},
-										"wildcardFileName": {
-											"value": "@item().Container_Name",
-											"type": "Expression"
-										},
-										"useBinaryTransfer": true
+										"wildcardFileName": "*"
 									},
 									"formatSettings": {
 										"type": "DelimitedTextReadSettings"
@@ -89,7 +81,7 @@
 									"formatSettings": {
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
-										"fileExtension": ".csv"
+										"fileExtension": ""
 									}
 								},
 								"enableStaging": false,
