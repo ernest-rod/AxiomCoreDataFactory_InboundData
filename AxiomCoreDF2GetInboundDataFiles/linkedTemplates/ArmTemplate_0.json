@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AxiomCore_VM_Seagate_SFtpServer'"
 		},
+		"AxiomSQLDatabase_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AxiomSQLDatabase'"
+		},
 		"AzureBlobStorage_Inbound_Data_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_Inbound_Data'"
@@ -19,15 +23,23 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorksDW'"
 		},
-		"AxiomSQLDatabase_connectionString": {
+		"AxiomCore_Sftp_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AxiomSQLDatabase'"
+			"metadata": "Secure string for 'password' of 'AxiomCore_Sftp'"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ernest"
+		},
+		"AxiomCore_Sftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "seagate.eastus.cloudapp.azure.com"
+		},
+		"AxiomCore_Sftp_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "ernest"
 		}
@@ -60,6 +72,30 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AxiomSQLDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"Database": {
+						"type": "string"
+					},
+					"User": {
+						"type": "string"
+					},
+					"Password": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AxiomSQLDatabase_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_Inbound_Data')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -87,25 +123,22 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AxiomSQLDatabase')]",
+			"name": "[concat(parameters('factoryName'), '/AxiomCore_Sftp')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"parameters": {
-					"Database": {
-						"type": "string"
-					},
-					"User": {
-						"type": "string"
-					},
-					"Password": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
-				"type": "AzureSqlDatabase",
+				"type": "Sftp",
 				"typeProperties": {
-					"connectionString": "[parameters('AxiomSQLDatabase_connectionString')]"
+					"host": "[parameters('AxiomCore_Sftp_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('AxiomCore_Sftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AxiomCore_Sftp_password')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -937,6 +970,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DstDataFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"BlobContainer": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Axiom Datasets/Production"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().BlobContainer",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceDataset_gqw')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1352,244 +1430,6 @@
 					},
 					{
 						"name": "ProductCategoryKey",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Source_DimProduct_CSVFile')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Product Dimension Data File.",
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_Inbound_Data",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Axiom Datasets/Test Area/AdventureWorks"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "DimProduct.csv",
-						"folderPath": "All Files",
-						"container": "inbounddatafiles"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"nullValue": "NULL",
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "ProductKey",
-						"type": "String"
-					},
-					{
-						"name": "ProductAlternateKey",
-						"type": "String"
-					},
-					{
-						"name": "ProductSubcategoryKey",
-						"type": "String"
-					},
-					{
-						"name": "WeightUnitMeasureCode",
-						"type": "String"
-					},
-					{
-						"name": "SizeUnitMeasureCode",
-						"type": "String"
-					},
-					{
-						"name": "EnglishProductName",
-						"type": "String"
-					},
-					{
-						"name": "SpanishProductName",
-						"type": "String"
-					},
-					{
-						"name": "FrenchProductName",
-						"type": "String"
-					},
-					{
-						"name": "StandardCost",
-						"type": "String"
-					},
-					{
-						"name": "FinishedGoodsFlag",
-						"type": "String"
-					},
-					{
-						"name": "Color",
-						"type": "String"
-					},
-					{
-						"name": "SafetyStockLevel",
-						"type": "String"
-					},
-					{
-						"name": "ReorderPoint",
-						"type": "String"
-					},
-					{
-						"name": "ListPrice",
-						"type": "String"
-					},
-					{
-						"name": "Size",
-						"type": "String"
-					},
-					{
-						"name": "SizeRange",
-						"type": "String"
-					},
-					{
-						"name": "Weight",
-						"type": "String"
-					},
-					{
-						"name": "DaysToManufacture",
-						"type": "String"
-					},
-					{
-						"name": "ProductLine",
-						"type": "String"
-					},
-					{
-						"name": "DealerPrice",
-						"type": "String"
-					},
-					{
-						"name": "Class",
-						"type": "String"
-					},
-					{
-						"name": "Style",
-						"type": "String"
-					},
-					{
-						"name": "ModelName",
-						"type": "String"
-					},
-					{
-						"name": "LargePhoto",
-						"type": "String"
-					},
-					{
-						"name": "EnglishDescription",
-						"type": "String"
-					},
-					{
-						"name": "FrenchDescription",
-						"type": "String"
-					},
-					{
-						"name": "ChineseDescription",
-						"type": "String"
-					},
-					{
-						"name": "ArabicDescription",
-						"type": "String"
-					},
-					{
-						"name": "HebrewDescription",
-						"type": "String"
-					},
-					{
-						"name": "ThaiDescription",
-						"type": "String"
-					},
-					{
-						"name": "GermanDescription",
-						"type": "String"
-					},
-					{
-						"name": "JapaneseDescription",
-						"type": "String"
-					},
-					{
-						"name": "TurkishDescription",
-						"type": "String"
-					},
-					{
-						"name": "StartDate",
-						"type": "String"
-					},
-					{
-						"name": "EndDate",
-						"type": "String"
-					},
-					{
-						"name": "Status",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Source_DimSalesTerritory_CSVFile')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Dim Sales Territory Data File.",
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_Inbound_Data",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Axiom Datasets/Test Area/AdventureWorks"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "DimSalesTerritory.csv",
-						"folderPath": "All Files",
-						"container": "inbounddatafiles"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"nullValue": "NULL",
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "SalesTerritoryKey",
-						"type": "String"
-					},
-					{
-						"name": "SalesTerritoryAlternateKey",
-						"type": "String"
-					},
-					{
-						"name": "SalesTerritoryRegion",
-						"type": "String"
-					},
-					{
-						"name": "SalesTerritoryCountry",
-						"type": "String"
-					},
-					{
-						"name": "SalesTerritoryGroup",
-						"type": "String"
-					},
-					{
-						"name": "SalesTerritoryImage",
 						"type": "String"
 					}
 				]

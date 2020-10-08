@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AxiomCore_VM_Seagate_SFtpServer'"
 		},
+		"AxiomSQLDatabase_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AxiomSQLDatabase'"
+		},
 		"AzureBlobStorage_Inbound_Data_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_Inbound_Data'"
@@ -19,15 +23,23 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorksDW'"
 		},
-		"AxiomSQLDatabase_connectionString": {
+		"AxiomCore_Sftp_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AxiomSQLDatabase'"
+			"metadata": "Secure string for 'password' of 'AxiomCore_Sftp'"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ernest"
+		},
+		"AxiomCore_Sftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "seagate.eastus.cloudapp.azure.com"
+		},
+		"AxiomCore_Sftp_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "ernest"
 		}
@@ -94,33 +106,30 @@
 							"isSequential": false,
 							"activities": [
 								{
-									"name": "Get Container For The Collection",
-									"type": "Lookup",
+									"name": "Execute Movement of DataFiles Into Destination",
+									"type": "ExecutePipeline",
 									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
 									"userProperties": [],
 									"typeProperties": {
-										"source": {
-											"type": "AzureSqlSource",
-											"sqlReaderQuery": {
-												"value": "SELECT\n   Container_ID,\n   Container_Name,\n   Container_Source_System\nFROM\n   dbo.get_collection_containers(@{item().Collection_ID})\n",
+										"pipeline": {
+											"referenceName": "Move DataFiles To Destination",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"CollectionID": {
+												"value": "@{item().Collection_ID}",
 												"type": "Expression"
 											},
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"dataset": {
-											"referenceName": "SrcArrivalCollections",
-											"type": "DatasetReference",
-											"parameters": {}
-										},
-										"firstRowOnly": false
+											"CollectionLocation": {
+												"value": "@{item().Location_Identifier}",
+												"type": "Expression"
+											},
+											"DestinationLocation": {
+												"value": "@pipeline().parameters.DestinationPath",
+												"type": "Expression"
+											}
+										}
 									}
 								}
 							]
@@ -131,6 +140,10 @@
 					"CustomerID": {
 						"type": "int",
 						"defaultValue": 1
+					},
+					"DestinationPath": {
+						"type": "string",
+						"defaultValue": "/New Arrivals"
 					}
 				},
 				"folder": {
@@ -139,7 +152,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SrcArrivalCollections')]"
+				"[concat(variables('factoryId'), '/datasets/SrcArrivalCollections')]",
+				"[concat(variables('factoryId'), '/pipelines/Move DataFiles To Destination')]"
 			]
 		},
 		{
@@ -292,6 +306,159 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/DFT_LoadDataIntoDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Move DataFiles To Destination')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Container For The Collection",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT\n   Container_ID,\n   Container_Name,\n   Container_Source_System\nFROM\n   dbo.get_collection_containers(@{pipeline().parameters.CollectionID})",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SrcArrivalCollections",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Iterate Each Data File",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Container For The Collection",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Container For The Collection').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Move Data File To Destination",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "SftpReadSettings",
+												"recursive": true,
+												"wildcardFolderPath": {
+													"value": "@pipeline().parameters.CollectionLocation",
+													"type": "Expression"
+												},
+												"wildcardFileName": {
+													"value": "@item().Container_Name",
+													"type": "Expression"
+												}
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ""
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SrcDataFiles",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DstDataFiles",
+											"type": "DatasetReference",
+											"parameters": {
+												"BlobContainer": "inbounddatafiles",
+												"Directory": {
+													"value": "@pipeline().parameters.DestinationLocation",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"CollectionID": {
+						"type": "int"
+					},
+					"CollectionLocation": {
+						"type": "string"
+					},
+					"DestinationLocation": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Axiom Pipelines/Production"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SrcArrivalCollections')]",
+				"[concat(variables('factoryId'), '/datasets/SrcDataFiles')]",
+				"[concat(variables('factoryId'), '/datasets/DstDataFiles')]"
 			]
 		},
 		{
@@ -1220,6 +1387,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DstDataFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"BlobContainer": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Axiom Datasets/Production"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().BlobContainer",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_Inbound_Data')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceDataset_gqw')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2051,6 +2263,63 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SrcArrivalCollections')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AxiomSQLDatabase",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Database": "Poseidon",
+						"User": "Ernest",
+						"Password": "Nebadon@1515"
+					}
+				},
+				"folder": {
+					"name": "Axiom Datasets/Production"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "get_customer_active_arrival_collections(1)"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AxiomSQLDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SrcDataFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AxiomCore_Sftp",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Production"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AxiomCore_Sftp')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AxiomCore_VM_Seagate_SFtpServer')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -2069,6 +2338,30 @@
 						"type": "SecureString",
 						"value": "[parameters('AxiomCore_VM_Seagate_SFtpServer_password')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AxiomSQLDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"Database": {
+						"type": "string"
+					},
+					"User": {
+						"type": "string"
+					},
+					"Password": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AxiomSQLDatabase_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -2235,57 +2528,25 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AxiomSQLDatabase')]",
+			"name": "[concat(parameters('factoryName'), '/AxiomCore_Sftp')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"parameters": {
-					"Database": {
-						"type": "string"
-					},
-					"User": {
-						"type": "string"
-					},
-					"Password": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
-				"type": "AzureSqlDatabase",
+				"type": "Sftp",
 				"typeProperties": {
-					"connectionString": "[parameters('AxiomSQLDatabase_connectionString')]"
+					"host": "[parameters('AxiomCore_Sftp_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('AxiomCore_Sftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AxiomCore_Sftp_password')]"
+					}
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SrcArrivalCollections')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AxiomSQLDatabase",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"Database": "Poseidon",
-						"User": "Ernest",
-						"Password": "Nebadon@1515"
-					}
-				},
-				"folder": {
-					"name": "Axiom Datasets/Production"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "get_customer_active_arrival_collections(1)"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AxiomSQLDatabase')]"
-			]
 		}
 	]
 }

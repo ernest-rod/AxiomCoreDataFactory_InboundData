@@ -13,6 +13,240 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Source_DimProduct_CSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Product Dimension Data File.",
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "DimProduct.csv",
+						"folderPath": "All Files",
+						"container": "inbounddatafiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "NULL",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProductKey",
+						"type": "String"
+					},
+					{
+						"name": "ProductAlternateKey",
+						"type": "String"
+					},
+					{
+						"name": "ProductSubcategoryKey",
+						"type": "String"
+					},
+					{
+						"name": "WeightUnitMeasureCode",
+						"type": "String"
+					},
+					{
+						"name": "SizeUnitMeasureCode",
+						"type": "String"
+					},
+					{
+						"name": "EnglishProductName",
+						"type": "String"
+					},
+					{
+						"name": "SpanishProductName",
+						"type": "String"
+					},
+					{
+						"name": "FrenchProductName",
+						"type": "String"
+					},
+					{
+						"name": "StandardCost",
+						"type": "String"
+					},
+					{
+						"name": "FinishedGoodsFlag",
+						"type": "String"
+					},
+					{
+						"name": "Color",
+						"type": "String"
+					},
+					{
+						"name": "SafetyStockLevel",
+						"type": "String"
+					},
+					{
+						"name": "ReorderPoint",
+						"type": "String"
+					},
+					{
+						"name": "ListPrice",
+						"type": "String"
+					},
+					{
+						"name": "Size",
+						"type": "String"
+					},
+					{
+						"name": "SizeRange",
+						"type": "String"
+					},
+					{
+						"name": "Weight",
+						"type": "String"
+					},
+					{
+						"name": "DaysToManufacture",
+						"type": "String"
+					},
+					{
+						"name": "ProductLine",
+						"type": "String"
+					},
+					{
+						"name": "DealerPrice",
+						"type": "String"
+					},
+					{
+						"name": "Class",
+						"type": "String"
+					},
+					{
+						"name": "Style",
+						"type": "String"
+					},
+					{
+						"name": "ModelName",
+						"type": "String"
+					},
+					{
+						"name": "LargePhoto",
+						"type": "String"
+					},
+					{
+						"name": "EnglishDescription",
+						"type": "String"
+					},
+					{
+						"name": "FrenchDescription",
+						"type": "String"
+					},
+					{
+						"name": "ChineseDescription",
+						"type": "String"
+					},
+					{
+						"name": "ArabicDescription",
+						"type": "String"
+					},
+					{
+						"name": "HebrewDescription",
+						"type": "String"
+					},
+					{
+						"name": "ThaiDescription",
+						"type": "String"
+					},
+					{
+						"name": "GermanDescription",
+						"type": "String"
+					},
+					{
+						"name": "JapaneseDescription",
+						"type": "String"
+					},
+					{
+						"name": "TurkishDescription",
+						"type": "String"
+					},
+					{
+						"name": "StartDate",
+						"type": "String"
+					},
+					{
+						"name": "EndDate",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Source_DimSalesTerritory_CSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Dim Sales Territory Data File.",
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "DimSalesTerritory.csv",
+						"folderPath": "All Files",
+						"container": "inbounddatafiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "NULL",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "SalesTerritoryKey",
+						"type": "String"
+					},
+					{
+						"name": "SalesTerritoryAlternateKey",
+						"type": "String"
+					},
+					{
+						"name": "SalesTerritoryRegion",
+						"type": "String"
+					},
+					{
+						"name": "SalesTerritoryCountry",
+						"type": "String"
+					},
+					{
+						"name": "SalesTerritoryGroup",
+						"type": "String"
+					},
+					{
+						"name": "SalesTerritoryImage",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Source_FactInternetSales_CSVFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -205,110 +439,30 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CopyDataFilesFromSeagate')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/SrcDataFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Get the customer's data files from SFTP Seagate.",
-				"activities": [
-					{
-						"name": "Get Active Arrival Collections",
-						"description": "Get the active arrival collections for an specific customer.",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "SELECT\n    Collection_ID,\n    Collection_Name,\n    Location_Identifier,\n    Location_Idenyifier_Descriptor,\n    Location_Idenyifier_Code\nFROM \n    dbo.get_customer_active_arrival_collections(@{pipeline().parameters.CustomerID})\n;\n",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "SrcArrivalCollections",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Iterate Customer Arrival Collections",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Active Arrival Collections",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Active Arrival Collections').output.value",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Get Container For The Collection",
-									"type": "Lookup",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "AzureSqlSource",
-											"sqlReaderQuery": {
-												"value": "SELECT\n   Container_ID,\n   Container_Name,\n   Container_Source_System\nFROM\n   dbo.get_collection_containers(@{item().Collection_ID})\n",
-												"type": "Expression"
-											},
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"dataset": {
-											"referenceName": "SrcArrivalCollections",
-											"type": "DatasetReference",
-											"parameters": {}
-										},
-										"firstRowOnly": false
-									}
-								}
-							]
-						}
-					}
-				],
-				"parameters": {
-					"CustomerID": {
-						"type": "int",
-						"defaultValue": 1
-					}
+				"linkedServiceName": {
+					"referenceName": "AxiomCore_Sftp",
+					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Axiom Pipelines/Production"
+					"name": "Axiom Datasets/Production"
 				},
-				"annotations": []
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SrcArrivalCollections')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/CopyPipeline_gqw')]",
@@ -393,6 +547,158 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Move DataFiles To Destination')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Container For The Collection",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT\n   Container_ID,\n   Container_Name,\n   Container_Source_System\nFROM\n   dbo.get_collection_containers(@{pipeline().parameters.CollectionID})",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SrcArrivalCollections",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Iterate Each Data File",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Container For The Collection",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Container For The Collection').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Move Data File To Destination",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "SftpReadSettings",
+												"recursive": true,
+												"wildcardFolderPath": {
+													"value": "@pipeline().parameters.CollectionLocation",
+													"type": "Expression"
+												},
+												"wildcardFileName": {
+													"value": "@item().Container_Name",
+													"type": "Expression"
+												}
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ""
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SrcDataFiles",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DstDataFiles",
+											"type": "DatasetReference",
+											"parameters": {
+												"BlobContainer": "inbounddatafiles",
+												"Directory": {
+													"value": "@pipeline().parameters.DestinationLocation",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"CollectionID": {
+						"type": "int"
+					},
+					"CollectionLocation": {
+						"type": "string"
+					},
+					"DestinationLocation": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Axiom Pipelines/Production"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SrcArrivalCollections')]",
+				"[concat(variables('factoryId'), '/datasets/SrcDataFiles')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/MoveAllFilesFromFTP')]",
@@ -610,7 +916,117 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Source_FactInternetSales_CSVFile')]"
+				"[concat(variables('factoryId'), '/datasets/Source_DimProduct_CSVFile')]",
+				"[concat(variables('factoryId'), '/datasets/Source_FactInternetSales_CSVFile')]",
+				"[concat(variables('factoryId'), '/datasets/Source_DimSalesTerritory_CSVFile')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CopyDataFilesFromSeagate')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Get the customer's data files from SFTP Seagate.",
+				"activities": [
+					{
+						"name": "Get Active Arrival Collections",
+						"description": "Get the active arrival collections for an specific customer.",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT\n    Collection_ID,\n    Collection_Name,\n    Location_Identifier,\n    Location_Idenyifier_Descriptor,\n    Location_Idenyifier_Code\nFROM \n    dbo.get_customer_active_arrival_collections(@{pipeline().parameters.CustomerID})\n;\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SrcArrivalCollections",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Iterate Customer Arrival Collections",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Active Arrival Collections",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Active Arrival Collections').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Execute Movement of DataFiles Into Destination",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "Move DataFiles To Destination",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"CollectionID": {
+												"value": "@{item().Collection_ID}",
+												"type": "Expression"
+											},
+											"CollectionLocation": {
+												"value": "@{item().Location_Identifier}",
+												"type": "Expression"
+											},
+											"DestinationLocation": {
+												"value": "@pipeline().parameters.DestinationPath",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"CustomerID": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"DestinationPath": {
+						"type": "string",
+						"defaultValue": "/New Arrivals"
+					}
+				},
+				"folder": {
+					"name": "Axiom Pipelines/Production"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SrcArrivalCollections')]",
+				"[concat(variables('factoryId'), '/pipelines/Move DataFiles To Destination')]"
 			]
 		},
 		{

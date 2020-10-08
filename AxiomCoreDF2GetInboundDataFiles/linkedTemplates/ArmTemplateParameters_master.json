@@ -8,19 +8,28 @@
 		"AxiomCore_VM_Seagate_SFtpServer_password": {
 			"value": ""
 		},
+		"AxiomSQLDatabase_connectionString": {
+			"value": ""
+		},
 		"AzureBlobStorage_Inbound_Data_connectionString": {
 			"value": ""
 		},
 		"AzureSqlDatabase_AdventureWorksDW_connectionString": {
 			"value": ""
 		},
-		"AxiomSQLDatabase_connectionString": {
+		"AxiomCore_Sftp_password": {
 			"value": ""
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"value": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
+			"value": "ernest"
+		},
+		"AxiomCore_Sftp_properties_typeProperties_host": {
+			"value": "seagate.eastus.cloudapp.azure.com"
+		},
+		"AxiomCore_Sftp_properties_typeProperties_userName": {
 			"value": "ernest"
 		},
 		"containerUri": {
