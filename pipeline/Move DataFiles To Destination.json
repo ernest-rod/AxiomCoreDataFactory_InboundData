@@ -70,6 +70,10 @@
 										"wildcardFolderPath": {
 											"value": "@pipeline().parameters.CollectionLocation",
 											"type": "Expression"
+										},
+										"wildcardFileName": {
+											"value": "@item().Container_Name",
+											"type": "Expression"
 										}
 									},
 									"formatSettings": {
