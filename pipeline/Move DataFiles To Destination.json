@@ -67,7 +67,10 @@
 									"storeSettings": {
 										"type": "SftpReadSettings",
 										"recursive": true,
-										"wildcardFileName": "*"
+										"wildcardFolderPath": {
+											"value": "@pipeline().parameters.CollectionLocation",
+											"type": "Expression"
+										}
 									},
 									"formatSettings": {
 										"type": "DelimitedTextReadSettings"
