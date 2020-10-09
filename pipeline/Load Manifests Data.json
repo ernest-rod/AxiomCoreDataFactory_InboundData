@@ -13,12 +13,29 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT\n    ContainerID,\n    ManifestName\n FROM\n    dbo.get_customer_manifests( @{pipeline().parameters.CustomerID} )",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SrcAzureSqlDataset",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
 			}
 		],
 		"parameters": {
 			"CustomerID": {
-				"type": "int"
+				"type": "int",
+				"defaultValue": 1
 			}
 		},
 		"folder": {
