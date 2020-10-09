@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "AxiomCoreDF2GetInboundDataFiles"
 		},
+		"AxiomCore_Sftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AxiomCore_Sftp'"
+		},
 		"AxiomCore_VM_Seagate_SFtpServer_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AxiomCore_VM_Seagate_SFtpServer'"
@@ -23,23 +27,19 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorksDW'"
 		},
-		"AxiomCore_Sftp_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'AxiomCore_Sftp'"
+		"AxiomCore_Sftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "seagate.eastus.cloudapp.azure.com"
+		},
+		"AxiomCore_Sftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ernest"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ernest"
-		},
-		"AxiomCore_Sftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "seagate.eastus.cloudapp.azure.com"
-		},
-		"AxiomCore_Sftp_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "ernest"
 		},
@@ -70,6 +70,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AxiomCore_Sftp_password": {
+						"value": "[parameters('AxiomCore_Sftp_password')]"
+					},
 					"AxiomCore_VM_Seagate_SFtpServer_password": {
 						"value": "[parameters('AxiomCore_VM_Seagate_SFtpServer_password')]"
 					},
@@ -82,20 +85,17 @@
 					"AzureSqlDatabase_AdventureWorksDW_connectionString": {
 						"value": "[parameters('AzureSqlDatabase_AdventureWorksDW_connectionString')]"
 					},
-					"AxiomCore_Sftp_password": {
-						"value": "[parameters('AxiomCore_Sftp_password')]"
+					"AxiomCore_Sftp_properties_typeProperties_host": {
+						"value": "[parameters('AxiomCore_Sftp_properties_typeProperties_host')]"
+					},
+					"AxiomCore_Sftp_properties_typeProperties_userName": {
+						"value": "[parameters('AxiomCore_Sftp_properties_typeProperties_userName')]"
 					},
 					"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 						"value": "[parameters('AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host')]"
 					},
 					"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
 						"value": "[parameters('AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName')]"
-					},
-					"AxiomCore_Sftp_properties_typeProperties_host": {
-						"value": "[parameters('AxiomCore_Sftp_properties_typeProperties_host')]"
-					},
-					"AxiomCore_Sftp_properties_typeProperties_userName": {
-						"value": "[parameters('AxiomCore_Sftp_properties_typeProperties_userName')]"
 					}
 				}
 			},

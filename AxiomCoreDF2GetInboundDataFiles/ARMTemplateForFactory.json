@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "AxiomCoreDF2GetInboundDataFiles"
 		},
+		"AxiomCore_Sftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AxiomCore_Sftp'"
+		},
 		"AxiomCore_VM_Seagate_SFtpServer_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AxiomCore_VM_Seagate_SFtpServer'"
@@ -23,23 +27,19 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_AdventureWorksDW'"
 		},
-		"AxiomCore_Sftp_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'AxiomCore_Sftp'"
+		"AxiomCore_Sftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "seagate.eastus.cloudapp.azure.com"
+		},
+		"AxiomCore_Sftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "ernest"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "seagate.eastus.cloudapp.azure.com"
 		},
 		"AxiomCore_VM_Seagate_SFtpServer_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "ernest"
-		},
-		"AxiomCore_Sftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "seagate.eastus.cloudapp.azure.com"
-		},
-		"AxiomCore_Sftp_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "ernest"
 		}
@@ -2320,6 +2320,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AxiomCore_Sftp')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('AxiomCore_Sftp_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('AxiomCore_Sftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AxiomCore_Sftp_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AxiomCore_VM_Seagate_SFtpServer')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -2528,25 +2549,82 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AxiomCore_Sftp')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/Load Manifests Data')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "Sftp",
-				"typeProperties": {
-					"host": "[parameters('AxiomCore_Sftp_properties_typeProperties_host')]",
-					"port": 22,
-					"skipHostKeyValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('AxiomCore_Sftp_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('AxiomCore_Sftp_password')]"
+				"activities": [
+					{
+						"name": "Get Manifest List",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT\n    ContainerID,\n    ManifestName\n FROM\n    dbo.get_customer_manifests( @{pipeline().parameters.CustomerID} )",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SrcAzureSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
 					}
-				}
+				],
+				"parameters": {
+					"CustomerID": {
+						"type": "int",
+						"defaultValue": 1
+					}
+				},
+				"folder": {
+					"name": "Axiom Pipelines/Production"
+				},
+				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SrcAzureSqlDataset')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SrcAzureSqlDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AxiomSQLDatabase",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Database": "Poseidon",
+						"User": "Ernest",
+						"Password": "Nebadon@1515"
+					}
+				},
+				"folder": {
+					"name": "Axiom Datasets/Production"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AxiomSQLDatabase')]"
+			]
 		}
 	]
 }
