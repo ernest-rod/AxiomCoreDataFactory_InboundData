@@ -1,0 +1,9 @@
+{
+	"name": "Load Manifests Data",
+	"properties": {
+		"folder": {
+			"name": "Axiom Pipelines/Production"
+		},
+		"annotations": []
+	}
+}
