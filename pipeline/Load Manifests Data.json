@@ -52,14 +52,7 @@
 						{
 							"name": "Load Manifest Data",
 							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "Process Manifest Records",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -101,35 +94,6 @@
 									}
 								}
 							]
-						},
-						{
-							"name": "Process Manifest Records",
-							"type": "ExecuteDataFlow",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataflow": {
-									"referenceName": "Manifest_Records",
-									"type": "DataFlowReference",
-									"parameters": {
-										"ManifestFile": {
-											"value": "'@{item().ManifestFile}'",
-											"type": "Expression"
-										}
-									}
-								},
-								"compute": {
-									"coreCount": 8,
-									"computeType": "General"
-								}
-							}
 						}
 					]
 				}
