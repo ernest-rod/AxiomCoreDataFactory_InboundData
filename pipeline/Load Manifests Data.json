@@ -5,7 +5,14 @@
 			{
 				"name": "Get Manifest List",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Get Customer ID from Unit ID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -120,10 +127,38 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Get Customer ID from Unit ID",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT\n    customer_id\nFROM \n   process.unit\nWHERE\n    id = @{pipeline().parameters.ProcessUnitID}\n    AND active = 1\n;\n\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SrcAzureSqlDataset",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"parameters": {
-			"CustomerID": {
+			"ProcessUnitID": {
 				"type": "int",
 				"defaultValue": 1
 			},
@@ -132,6 +167,11 @@
 			},
 			"Directory": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"customer_id": {
+				"type": "String"
 			}
 		},
 		"folder": {
