@@ -73,7 +73,17 @@
 							"inputs": [
 								{
 									"referenceName": "SrcManifestFiles",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"BlobContainer": {
+											"value": "@pipeline().parameters.BlobContainer",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@pipeline().parameters.Directory",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
