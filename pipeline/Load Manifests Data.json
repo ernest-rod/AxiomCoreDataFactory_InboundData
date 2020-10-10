@@ -82,6 +82,10 @@
 										"Directory": {
 											"value": "@pipeline().parameters.Directory",
 											"type": "Expression"
+										},
+										"ManifestFile": {
+											"value": "@item().ManifestName",
+											"type": "Expression"
 										}
 									}
 								}
