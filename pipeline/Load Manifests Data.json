@@ -30,6 +30,19 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Iterate Manifest List",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Manifest List",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"parameters": {
