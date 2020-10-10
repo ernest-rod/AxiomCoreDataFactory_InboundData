@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "Manifest_Records",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
