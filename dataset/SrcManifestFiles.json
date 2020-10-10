@@ -5,6 +5,14 @@
 			"referenceName": "AzureBlobStorage_Inbound_Data",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"BlobContainer": {
+				"type": "string"
+			},
+			"Directory": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "Axiom Datasets/Production"
 		},
@@ -12,7 +20,15 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation"
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@dataset().Directory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().BlobContainer",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
