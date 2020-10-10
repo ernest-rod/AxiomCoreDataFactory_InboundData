@@ -50,50 +50,113 @@
 					},
 					"activities": [
 						{
-							"name": "Load Manifest Data",
-							"type": "Copy",
+							"name": "Switch1",
+							"type": "Switch",
 							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "DelimitedTextSource",
-									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
+								"on": {
+									"value": "@{pipeline().parameters.ProcessUnitID}",
+									"type": "Expression"
 								},
-								"enableStaging": false
-							},
-							"inputs": [
-								{
-									"referenceName": "SrcManifestFiles",
-									"type": "DatasetReference",
-									"parameters": {
-										"BlobContainer": {
-											"value": "@pipeline().parameters.BlobContainer",
-											"type": "Expression"
-										},
-										"Directory": {
-											"value": "@pipeline().parameters.Directory",
-											"type": "Expression"
-										},
-										"ManifestFile": {
-											"value": "@item().ManifestName",
-											"type": "Expression"
-										}
+								"cases": [
+									{
+										"value": "Case1"
 									}
-								}
-							]
+								],
+								"defaultActivities": [
+									{
+										"name": "Load Manifest Data_copy1",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "7.00:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "DelimitedTextSource",
+												"storeSettings": {
+													"type": "AzureBlobStorageReadSettings",
+													"recursive": true
+												},
+												"formatSettings": {
+													"type": "DelimitedTextReadSettings"
+												}
+											},
+											"sink": {
+												"type": "SqlServerSink",
+												"sqlWriterStoredProcedureName": "[dbo].[stage_manifest_item]",
+												"storedProcedureParameters": {
+													"container_count": {
+														"type": "Int64"
+													},
+													"container_name": {
+														"type": "String"
+													},
+													"unit_id": {
+														"type": "Int32",
+														"value": {
+															"value": "@pipeline().parameters.ProcessUnitID",
+															"type": "Expression"
+														}
+													}
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"mappings": [
+													{
+														"source": {
+															"type": "Double",
+															"ordinal": 1
+														},
+														"sink": {
+															"name": "cxcx"
+														}
+													}
+												],
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "SrcManifestFiles",
+												"type": "DatasetReference",
+												"parameters": {
+													"BlobContainer": {
+														"value": "@pipeline().parameters.BlobContainer",
+														"type": "Expression"
+													},
+													"Directory": {
+														"value": "@pipeline().parameters.Directory",
+														"type": "Expression"
+													},
+													"ManifestFile": {
+														"value": "@item().ManifestName",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "DstSqlServerTable",
+												"type": "DatasetReference"
+											}
+										]
+									}
+								]
+							}
 						}
 					]
 				}
