@@ -25,7 +25,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT\n    ContainerID,\n    ManifestName\n FROM\n    dbo.get_customer_manifests( @{pipeline().parameters.CustomerID} )",
+							"value": "\n\nSELECT\n    ContainerID,\n    ManifestName\n FROM\n    dbo.get_customer_manifests( @{activity('Get Customer ID from Unit ID').output.value} )",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
