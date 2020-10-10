@@ -1,0 +1,15 @@
+{
+	"name": "DstSqlServerTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer_Poseidon_Database",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/Production"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
