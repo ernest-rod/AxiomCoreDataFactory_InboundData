@@ -11,6 +11,9 @@
 			},
 			"Directory": {
 				"type": "string"
+			},
+			"ManifestFile": {
+				"type": "string"
 			}
 		},
 		"folder": {
@@ -21,6 +24,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().ManifestFile",
+					"type": "Expression"
+				},
 				"folderPath": {
 					"value": "@dataset().Directory",
 					"type": "Expression"
