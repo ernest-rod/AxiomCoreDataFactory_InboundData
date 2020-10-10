@@ -117,7 +117,13 @@
 							"typeProperties": {
 								"dataflow": {
 									"referenceName": "Manifest_Records",
-									"type": "DataFlowReference"
+									"type": "DataFlowReference",
+									"parameters": {
+										"ManifestFile": {
+											"value": "'@{item().ManifestFile}'",
+											"type": "Expression"
+										}
+									}
 								},
 								"compute": {
 									"coreCount": 8,
