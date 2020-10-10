@@ -56,12 +56,12 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@{pipeline().parameters.ProcessUnitID}",
+									"value": "string(@pipeline().parameters.ProcessUnitID)",
 									"type": "Expression"
 								},
 								"cases": [
 									{
-										"value": "Case1",
+										"value": "1",
 										"activities": [
 											{
 												"name": "Load Manifest Data_copy1",
