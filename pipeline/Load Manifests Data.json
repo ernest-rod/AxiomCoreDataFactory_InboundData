@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "\n\nSELECT\n    ContainerID,\n    ManifestName\n FROM\n    dbo.get_customer_manifests( @{activity('Get Customer ID from Unit ID').output.value} )",
+							"value": "SELECT\n    con.base_name       AS ManifestFile,\n    con.collection_id   AS CollectionIDForManifest\nFROM \n    process.unit_detail AS unit \nINNER JOIN\n    arrival.collection AS col \n    ON unit.collection_id = col.id\nINNER JOIN\n    arrival.container AS con \n    ON col.id = con.collection_id\nWHERE\n    unit.unit_id = @{pipeline().parameters.ProcessUnitID}\n    AND con.base_name LIKE '%.manifest'\n    AND col.active = 1\n    AND con.active = 1",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
