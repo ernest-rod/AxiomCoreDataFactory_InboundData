@@ -64,7 +64,7 @@
 										"value": "PU-WWI-REG",
 										"activities": [
 											{
-												"name": "Load Manifest Data_copy1",
+												"name": "Load Manifest Data",
 												"type": "Copy",
 												"dependsOn": [],
 												"policy": {
