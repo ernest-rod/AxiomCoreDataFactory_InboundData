@@ -1,5 +1,5 @@
 {
-	"name": "Load Manifests Data",
+	"name": "Stage Manifests Data",
 	"properties": {
 		"activities": [
 			{
