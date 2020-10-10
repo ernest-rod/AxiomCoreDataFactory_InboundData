@@ -58,8 +58,24 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
 								"enableStaging": false
-							}
+							},
+							"inputs": [
+								{
+									"referenceName": "SrcManifestFiles",
+									"type": "DatasetReference"
+								}
+							]
 						}
 					]
 				}
@@ -69,6 +85,12 @@
 			"CustomerID": {
 				"type": "int",
 				"defaultValue": 1
+			},
+			"BlobContainer": {
+				"type": "string"
+			},
+			"Directory": {
+				"type": "string"
 			}
 		},
 		"folder": {
