@@ -172,6 +172,9 @@
 			},
 			"Directory": {
 				"type": "string"
+			},
+			"ProcessUnitCode": {
+				"type": "string"
 			}
 		},
 		"folder": {
