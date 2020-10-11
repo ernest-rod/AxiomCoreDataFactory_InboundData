@@ -33,7 +33,7 @@
 				"type": "string"
 			},
 			"Password": {
-				"type": "securestring"
+				"type": "string"
 			}
 		},
 		"folder": {
