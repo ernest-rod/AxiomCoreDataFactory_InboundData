@@ -1,0 +1,39 @@
+{
+	"name": "WWI_Stage_Manifest_Item_Table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AxiomSQLDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Axiom Datasets/Production/WWI"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "container_name",
+				"type": "varchar"
+			},
+			{
+				"name": "container_count",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "created_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "created_by",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stage",
+			"table": "manifest_item"
+		}
+	}
+}
