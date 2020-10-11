@@ -13,6 +13,63 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Source_DimProductSubCategory_CSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Product Sub Category Dimension Data File.",
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Axiom Datasets/Test Area/AdventureWorks"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "DimProductSubCategory.csv",
+						"folderPath": "All Files",
+						"container": "inbounddatafiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "NULL",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProductSubcategoryKey",
+						"type": "String"
+					},
+					{
+						"name": "ProductSubcategoryAlternateKey",
+						"type": "String"
+					},
+					{
+						"name": "EnglishProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "SpanishProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "FrenchProductSubcategoryName",
+						"type": "String"
+					},
+					{
+						"name": "ProductCategoryKey",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Source_DimProduct_CSVFile')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -439,6 +496,30 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SrcAzureSqlDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AxiomSQLDatabase",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Database": "Poseidon",
+						"User": "Ernest",
+						"Password": "Nebadon@1515"
+					}
+				},
+				"folder": {
+					"name": "Axiom Datasets/Production"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SrcDataFiles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -465,26 +546,58 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SrcAzureSqlDataset')]",
+			"name": "[concat(parameters('factoryName'), '/SrcManifestFiles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AxiomSQLDatabase",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"Database": "Poseidon",
-						"User": "Ernest",
-						"Password": "Nebadon@1515"
+					"referenceName": "AzureBlobStorage_Inbound_Data",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"BlobContainer": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					},
+					"ManifestFile": {
+						"type": "string"
 					}
 				},
 				"folder": {
 					"name": "Axiom Datasets/Production"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {}
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().ManifestFile",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().BlobContainer",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": []
 		},
@@ -665,7 +778,10 @@
 											"formatSettings": {
 												"type": "DelimitedTextWriteSettings",
 												"quoteAllText": true,
-												"fileExtension": ""
+												"fileExtension": {
+													"value": "@{\n   IF( \n      ENDSWITH( item().Container_Name, '.csv' ),\n      '.csv',\n      ' '\n   ) \n}",
+													"type": "Expression"
+												}
 											}
 										},
 										"enableStaging": false,
@@ -823,6 +939,175 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Stage Manifests Items')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Manifest List",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT\n    con.base_name       AS ManifestFile,\n    con.collection_id   AS CollectionIDForManifest\nFROM \n    process.unit_detail AS unit \nINNER JOIN\n    arrival.collection AS col \n    ON unit.collection_id = col.id\nINNER JOIN\n    arrival.container AS con \n    ON col.id = con.collection_id\nWHERE\n    unit.unit_id = @{pipeline().parameters.ProcessUnitID}\n    AND con.base_name LIKE '%.manifest'\n    AND col.active = 1\n    AND con.active = 1",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SrcAzureSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Iterate Manifest List",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Manifest List",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Manifest List').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Switch1",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@pipeline().parameters.ProcessUnitCode",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "PU-WWI-REG",
+												"activities": [
+													{
+														"name": "Load Manifest Data",
+														"type": "Copy",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "7.00:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "DelimitedTextSource",
+																"storeSettings": {
+																	"type": "AzureBlobStorageReadSettings",
+																	"recursive": true
+																},
+																"formatSettings": {
+																	"type": "DelimitedTextReadSettings"
+																}
+															},
+															"sink": {
+																"type": "AzureSqlSink"
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"typeConversion": true,
+																"typeConversionSettings": {
+																	"allowDataTruncation": true,
+																	"treatBooleanAsNumber": false
+																}
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "SrcManifestFiles",
+																"type": "DatasetReference",
+																"parameters": {
+																	"BlobContainer": {
+																		"value": "@pipeline().parameters.BlobContainer",
+																		"type": "Expression"
+																	},
+																	"Directory": {
+																		"value": "@pipeline().parameters.Directory",
+																		"type": "Expression"
+																	},
+																	"ManifestFile": {
+																		"value": "@item().ManifestName",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "Azure_SQL_Database_Table",
+																"type": "DatasetReference",
+																"parameters": {
+																	"SchemaName": "stage",
+																	"TableName": "manifest_item"
+																}
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"ProcessUnitID": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"BlobContainer": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					},
+					"ProcessUnitCode": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Axiom Pipelines/Production"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SrcAzureSqlDataset')]",
+				"[concat(variables('factoryId'), '/datasets/SrcManifestFiles')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DFT_LoadDataIntoDB')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -942,59 +1227,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Source_DimProduct_CSVFile')]",
 				"[concat(variables('factoryId'), '/datasets/Source_FactInternetSales_CSVFile')]",
-				"[concat(variables('factoryId'), '/datasets/Source_DimSalesTerritory_CSVFile')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Load Manifests Data')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Manifest List",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "SELECT\n    ContainerID,\n    ManifestName\n FROM\n    dbo.get_customer_manifests( @{pipeline().parameters.CustomerID} )",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "SrcAzureSqlDataset",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					}
-				],
-				"parameters": {
-					"CustomerID": {
-						"type": "int",
-						"defaultValue": 1
-					}
-				},
-				"folder": {
-					"name": "Axiom Pipelines/Production"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SrcAzureSqlDataset')]"
+				"[concat(variables('factoryId'), '/datasets/Source_DimSalesTerritory_CSVFile')]",
+				"[concat(variables('factoryId'), '/datasets/Source_DimProductSubCategory_CSVFile')]"
 			]
 		},
 		{
