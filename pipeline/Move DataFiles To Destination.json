@@ -88,7 +88,10 @@
 									"formatSettings": {
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
-										"fileExtension": ".csv"
+										"fileExtension": {
+											"value": "@item().Container_Name",
+											"type": "Expression"
+										}
 									}
 								},
 								"enableStaging": false,
