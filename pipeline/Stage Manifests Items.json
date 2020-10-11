@@ -127,7 +127,7 @@
 															"SchemaName": "stage",
 															"TableName": "manifest_item",
 															"DatabaseName": "WideWorldImporters",
-															"User": "ernest",
+															"User": "Ernest",
 															"Password": {
 																"type": "SecureString",
 																"value": "**********"
