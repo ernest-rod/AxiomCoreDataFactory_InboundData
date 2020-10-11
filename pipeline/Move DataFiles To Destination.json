@@ -89,7 +89,7 @@
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
 										"fileExtension": {
-											"value": "if( \n   endswith( @item().Container_Name, '.csv' ),\n   '.csv',\n   '.manifest'\n)",
+											"value": "if( \n   endswith( @{item().Container_Name}, '.csv' ),\n   '.csv',\n   '.manifest'\n)",
 											"type": "Expression"
 										}
 									}
