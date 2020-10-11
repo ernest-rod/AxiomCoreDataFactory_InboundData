@@ -148,10 +148,12 @@
 				"defaultValue": 1
 			},
 			"BlobContainer": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "inbounddatafiles"
 			},
 			"Directory": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "New Arrival"
 			},
 			"ProcessUnitCode": {
 				"type": "string"
