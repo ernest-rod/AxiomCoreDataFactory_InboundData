@@ -89,7 +89,7 @@
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
 										"fileExtension": {
-											"value": "@{split(item().Container_Name, '.')[2]}",
+											"value": "@{ concat( '.', split(item().Container_Name, '.')[2] ) }",
 											"type": "Expression"
 										}
 									}
