@@ -1,5 +1,5 @@
 {
-	"name": "WWI_Stage_Manifest_Item_Table",
+	"name": "Azure_SQL_Database_Table",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AxiomSQLDatabase",
