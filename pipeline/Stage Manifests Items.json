@@ -86,25 +86,6 @@
 															"type": "DelimitedTextReadSettings"
 														}
 													},
-													"sink": {
-														"type": "SqlServerSink",
-														"sqlWriterStoredProcedureName": "[dbo].[stage_manifest_item]",
-														"storedProcedureParameters": {
-															"container_count": {
-																"type": "Int64"
-															},
-															"container_name": {
-																"type": "String"
-															},
-															"unit_id": {
-																"type": "Int32",
-																"value": {
-																	"value": "@pipeline().parameters.ProcessUnitID",
-																	"type": "Expression"
-																}
-															}
-														}
-													},
 													"enableStaging": false,
 													"translator": {
 														"type": "TabularTranslator",
@@ -118,12 +99,7 @@
 																	"name": "cxcx"
 																}
 															}
-														],
-														"typeConversion": true,
-														"typeConversionSettings": {
-															"allowDataTruncation": true,
-															"treatBooleanAsNumber": false
-														}
+														]
 													}
 												},
 												"inputs": [
@@ -144,12 +120,6 @@
 																"type": "Expression"
 															}
 														}
-													}
-												],
-												"outputs": [
-													{
-														"referenceName": "DstSqlServerTable",
-														"type": "DatasetReference"
 													}
 												]
 											}
