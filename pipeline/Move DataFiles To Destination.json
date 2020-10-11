@@ -89,7 +89,7 @@
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
 										"fileExtension": {
-											"value": "@{\n   IF( \n      ENDSWITH( item().Container_Name, '.csv' ),\n      '.csv',\n      ''\n   ) \n}",
+											"value": "@{\n   IF( \n      ENDSWITH( item().Container_Name, '.csv' ),\n      '.csv',\n      ' '\n   ) \n}",
 											"type": "Expression"
 										}
 									}
