@@ -86,6 +86,9 @@
 															"type": "DelimitedTextReadSettings"
 														}
 													},
+													"sink": {
+														"type": "AzureSqlSink"
+													},
 													"enableStaging": false,
 													"translator": {
 														"type": "TabularTranslator",
@@ -99,7 +102,12 @@
 																	"name": "cxcx"
 																}
 															}
-														]
+														],
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
 													}
 												},
 												"inputs": [
@@ -119,6 +127,16 @@
 																"value": "@item().ManifestName",
 																"type": "Expression"
 															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "Azure_SQL_Database_Table",
+														"type": "DatasetReference",
+														"parameters": {
+															"SchemaName": "stage",
+															"TableName": "manifest_item"
 														}
 													}
 												]
