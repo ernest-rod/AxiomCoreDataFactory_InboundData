@@ -125,7 +125,13 @@
 														"type": "DatasetReference",
 														"parameters": {
 															"SchemaName": "stage",
-															"TableName": "manifest_item"
+															"TableName": "manifest_item",
+															"DatabaseName": "WideWorldImporters",
+															"User": "ernest",
+															"Password": {
+																"type": "SecureString",
+																"value": "**********"
+															}
 														}
 													}
 												]
