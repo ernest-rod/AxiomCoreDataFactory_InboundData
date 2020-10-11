@@ -92,17 +92,6 @@
 													"enableStaging": false,
 													"translator": {
 														"type": "TabularTranslator",
-														"mappings": [
-															{
-																"source": {
-																	"type": "Double",
-																	"ordinal": 1
-																},
-																"sink": {
-																	"name": "cxcx"
-																}
-															}
-														],
 														"typeConversion": true,
 														"typeConversionSettings": {
 															"allowDataTruncation": true,
