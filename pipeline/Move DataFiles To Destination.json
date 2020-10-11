@@ -89,7 +89,7 @@
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
 										"fileExtension": {
-											"value": "@{ concat( '.', split(item().Container_Name, '.')[2] ) }",
+											"value": "@{\n   IF( \n      ENDSWITH( item().Container_Name, '.csv' ),\n      '.csv',\n      '.manifest'\n   ) \n}",
 											"type": "Expression"
 										}
 									}
