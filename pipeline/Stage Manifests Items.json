@@ -128,10 +128,7 @@
 															"TableName": "manifest_item",
 															"DatabaseName": "WideWorldImporters",
 															"User": "Ernest",
-															"Password": {
-																"type": "SecureString",
-																"value": "**********"
-															}
+															"Password": "Nebadon@1515"
 														}
 													}
 												]
