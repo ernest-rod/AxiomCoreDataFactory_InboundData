@@ -89,7 +89,7 @@
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
 										"fileExtension": {
-											"value": "@item().Container_Name",
+											"value": "substring( @item().Container_Name, indexOf( @item().Container_Name, '.' ), 3 )",
 											"type": "Expression"
 										}
 									}
