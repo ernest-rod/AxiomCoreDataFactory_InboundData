@@ -89,7 +89,7 @@
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
 										"fileExtension": {
-											"value": "if( true, 'csv', 'manifest' )\n",
+											"value": "if( equals(1, 1), 'csv', 'manifest' )\n",
 											"type": "Expression"
 										}
 									}
