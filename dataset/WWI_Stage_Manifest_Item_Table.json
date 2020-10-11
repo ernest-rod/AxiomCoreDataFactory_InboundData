@@ -5,6 +5,14 @@
 			"referenceName": "AxiomSQLDatabase",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"SchemaName": {
+				"type": "string"
+			},
+			"TableName": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "Axiom Datasets/Production/WWI"
 		},
@@ -32,7 +40,10 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "stage",
+			"schema": {
+				"value": "@dataset().SchemaName",
+				"type": "Expression"
+			},
 			"table": "manifest_item"
 		}
 	}
