@@ -18,27 +18,7 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [
-			{
-				"name": "container_name",
-				"type": "varchar"
-			},
-			{
-				"name": "container_count",
-				"type": "bigint",
-				"precision": 19
-			},
-			{
-				"name": "created_at",
-				"type": "datetime",
-				"precision": 23,
-				"scale": 3
-			},
-			{
-				"name": "created_by",
-				"type": "varchar"
-			}
-		],
+		"schema": [],
 		"typeProperties": {
 			"schema": {
 				"value": "@dataset().SchemaName",
