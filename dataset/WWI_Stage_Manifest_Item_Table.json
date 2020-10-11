@@ -44,7 +44,10 @@
 				"value": "@dataset().SchemaName",
 				"type": "Expression"
 			},
-			"table": "manifest_item"
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
 		}
 	}
 }
