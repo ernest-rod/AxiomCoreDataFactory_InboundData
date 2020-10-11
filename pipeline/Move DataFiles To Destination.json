@@ -88,10 +88,7 @@
 									"formatSettings": {
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
-										"fileExtension": {
-											"value": "if( equals(1, 1), 'csv', 'manifest' )\n",
-											"type": "Expression"
-										}
+										"fileExtension": ".txt"
 									}
 								},
 								"enableStaging": false,
