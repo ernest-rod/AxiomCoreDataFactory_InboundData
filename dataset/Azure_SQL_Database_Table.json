@@ -14,7 +14,7 @@
 			}
 		},
 		"folder": {
-			"name": "Axiom Datasets/Production/WWI"
+			"name": "Axiom Datasets/Production"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
