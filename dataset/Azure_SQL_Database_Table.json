@@ -11,6 +11,15 @@
 			},
 			"TableName": {
 				"type": "string"
+			},
+			"DatabaseName": {
+				"type": "string"
+			},
+			"User": {
+				"type": "string"
+			},
+			"Password": {
+				"type": "securestring"
 			}
 		},
 		"folder": {
