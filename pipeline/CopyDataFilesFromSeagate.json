@@ -90,7 +90,7 @@
 			},
 			"DestinationPath": {
 				"type": "string",
-				"defaultValue": "/Arrivals"
+				"defaultValue": "/Arrival"
 			}
 		},
 		"folder": {
