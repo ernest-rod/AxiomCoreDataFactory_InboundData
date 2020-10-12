@@ -96,7 +96,6 @@
 															{
 																"source": {
 																	"type": "String",
-																	"physicalType": "String",
 																	"ordinal": 1
 																},
 																"sink": {
@@ -112,8 +111,8 @@
 																},
 																"sink": {
 																	"name": "container_count",
-																	"type": "Int64",
-																	"physicalType": "bigint"
+																	"type": "String",
+																	"physicalType": "varchar"
 																}
 															}
 														],
