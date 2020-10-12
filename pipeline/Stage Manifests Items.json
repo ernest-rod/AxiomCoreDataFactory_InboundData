@@ -96,7 +96,6 @@
 															{
 																"source": {
 																	"type": "String",
-																	"physicalType": "String",
 																	"ordinal": 1
 																},
 																"sink": {
