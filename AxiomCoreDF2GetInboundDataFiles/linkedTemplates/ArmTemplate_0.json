@@ -150,13 +150,36 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AxiomSQLDatabase",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Database": {
+							"value": "@dataset().DatabaseName",
+							"type": "Expression"
+						},
+						"User": {
+							"value": "@dataset().User",
+							"type": "Expression"
+						},
+						"Password": {
+							"value": "@dataset().Password",
+							"type": "Expression"
+						}
+					}
 				},
 				"parameters": {
 					"SchemaName": {
 						"type": "string"
 					},
 					"TableName": {
+						"type": "string"
+					},
+					"DatabaseName": {
+						"type": "string"
+					},
+					"User": {
+						"type": "string"
+					},
+					"Password": {
 						"type": "string"
 					}
 				},

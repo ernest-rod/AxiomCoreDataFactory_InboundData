@@ -681,7 +681,7 @@
 																		"type": "Expression"
 																	},
 																	"ManifestFile": {
-																		"value": "@item().ManifestName",
+																		"value": "@item().ManifestFile",
 																		"type": "Expression"
 																	}
 																}
@@ -693,7 +693,10 @@
 																"type": "DatasetReference",
 																"parameters": {
 																	"SchemaName": "stage",
-																	"TableName": "manifest_item"
+																	"TableName": "manifest_item",
+																	"DatabaseName": "WideWorldImporters",
+																	"User": "Ernest",
+																	"Password": "Nebadon@1515"
 																}
 															}
 														]
@@ -713,10 +716,12 @@
 						"defaultValue": 1
 					},
 					"BlobContainer": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "inbounddatafiles"
 					},
 					"Directory": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "New Arrival"
 					},
 					"ProcessUnitCode": {
 						"type": "string"
@@ -740,13 +745,36 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "AxiomSQLDatabase",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Database": {
+							"value": "@dataset().DatabaseName",
+							"type": "Expression"
+						},
+						"User": {
+							"value": "@dataset().User",
+							"type": "Expression"
+						},
+						"Password": {
+							"value": "@dataset().Password",
+							"type": "Expression"
+						}
+					}
 				},
 				"parameters": {
 					"SchemaName": {
 						"type": "string"
 					},
 					"TableName": {
+						"type": "string"
+					},
+					"DatabaseName": {
+						"type": "string"
+					},
+					"User": {
+						"type": "string"
+					},
+					"Password": {
 						"type": "string"
 					}
 				},

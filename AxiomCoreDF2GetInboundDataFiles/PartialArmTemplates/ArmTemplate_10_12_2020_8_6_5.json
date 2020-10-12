@@ -1,0 +1,247 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "AxiomCoreDF2GetInboundDataFiles"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Stage Manifests Items')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Manifest List",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT\n    con.base_name       AS ManifestFile,\n    con.collection_id   AS CollectionIDForManifest\nFROM \n    process.unit_detail AS unit \nINNER JOIN\n    arrival.collection AS col \n    ON unit.collection_id = col.id\nINNER JOIN\n    arrival.container AS con \n    ON col.id = con.collection_id\nWHERE\n    unit.unit_id = @{pipeline().parameters.ProcessUnitID}\n    AND con.base_name LIKE '%.manifest'\n    AND col.active = 1\n    AND con.active = 1",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SrcAzureSqlDataset",
+								"type": "DatasetReference"
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Iterate Manifest List",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Manifest List",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Manifest List').output.value",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Switch1",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@pipeline().parameters.ProcessUnitCode",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "PU-WWI-REG",
+												"activities": [
+													{
+														"name": "Load Manifest Data",
+														"type": "Copy",
+														"dependsOn": [],
+														"policy": {
+															"timeout": "7.00:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"source": {
+																"type": "DelimitedTextSource",
+																"storeSettings": {
+																	"type": "AzureBlobStorageReadSettings",
+																	"recursive": true
+																},
+																"formatSettings": {
+																	"type": "DelimitedTextReadSettings"
+																}
+															},
+															"sink": {
+																"type": "AzureSqlSink"
+															},
+															"enableStaging": false,
+															"translator": {
+																"type": "TabularTranslator",
+																"typeConversion": true,
+																"typeConversionSettings": {
+																	"allowDataTruncation": true,
+																	"treatBooleanAsNumber": false
+																}
+															}
+														},
+														"inputs": [
+															{
+																"referenceName": "SrcManifestFiles",
+																"type": "DatasetReference",
+																"parameters": {
+																	"BlobContainer": {
+																		"value": "@pipeline().parameters.BlobContainer",
+																		"type": "Expression"
+																	},
+																	"Directory": {
+																		"value": "@pipeline().parameters.Directory",
+																		"type": "Expression"
+																	},
+																	"ManifestFile": {
+																		"value": "@item().ManifestFile",
+																		"type": "Expression"
+																	}
+																}
+															}
+														],
+														"outputs": [
+															{
+																"referenceName": "Azure_SQL_Database_Table",
+																"type": "DatasetReference",
+																"parameters": {
+																	"SchemaName": "stage",
+																	"TableName": "manifest_item",
+																	"DatabaseName": "WideWorldImporters",
+																	"User": "Ernest",
+																	"Password": "Nebadon@1515"
+																}
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"ProcessUnitID": {
+						"type": "int",
+						"defaultValue": 1
+					},
+					"BlobContainer": {
+						"type": "string",
+						"defaultValue": "inbounddatafiles"
+					},
+					"Directory": {
+						"type": "string",
+						"defaultValue": "New Arrival"
+					},
+					"ProcessUnitCode": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Axiom Pipelines/Production"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Azure_SQL_Database_Table')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Azure_SQL_Database_Table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AxiomSQLDatabase",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Database": {
+							"value": "@dataset().DatabaseName",
+							"type": "Expression"
+						},
+						"User": {
+							"value": "@dataset().User",
+							"type": "Expression"
+						},
+						"Password": {
+							"value": "@dataset().Password",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"SchemaName": {
+						"type": "string"
+					},
+					"TableName": {
+						"type": "string"
+					},
+					"DatabaseName": {
+						"type": "string"
+					},
+					"User": {
+						"type": "string"
+					},
+					"Password": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Axiom Datasets/Production"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
