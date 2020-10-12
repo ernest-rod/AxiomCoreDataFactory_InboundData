@@ -177,10 +177,11 @@
 			},
 			"Directory": {
 				"type": "string",
-				"defaultValue": "New Arrival"
+				"defaultValue": "Arrival"
 			},
 			"ProcessUnitCode": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "PU-WWI-REG"
 			}
 		},
 		"folder": {
