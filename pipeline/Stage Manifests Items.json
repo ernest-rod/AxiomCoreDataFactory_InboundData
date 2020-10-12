@@ -107,7 +107,7 @@
 															},
 															{
 																"source": {
-																	"type": "String",
+																	"type": "Int64",
 																	"ordinal": 2
 																},
 																"sink": {
