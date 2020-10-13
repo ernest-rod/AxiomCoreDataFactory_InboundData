@@ -738,10 +738,7 @@
 																"referenceName": "SrcManifestFiles",
 																"type": "DatasetReference",
 																"parameters": {
-																	"BlobContainer": {
-																		"value": "@pipeline().parameters.BlobContainer",
-																		"type": "Expression"
-																	},
+																	"BlobContainer": "inbounddatafiles",
 																	"Directory": {
 																		"value": "@activity('Get Customer ID From Unit ID').output.firstrow.code",
 																		"type": "Expression"
@@ -809,10 +806,6 @@
 					"ProcessUnitID": {
 						"type": "int",
 						"defaultValue": 1
-					},
-					"BlobContainer": {
-						"type": "string",
-						"defaultValue": "inbounddatafiles"
 					}
 				},
 				"folder": {
