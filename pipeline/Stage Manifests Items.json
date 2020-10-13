@@ -63,7 +63,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@pipeline().parameters.ProcessUnitCode",
+									"value": "@activity('Get Customer ID From Unit ID').output.firstrow.code",
 									"type": "Expression"
 								},
 								"cases": [
