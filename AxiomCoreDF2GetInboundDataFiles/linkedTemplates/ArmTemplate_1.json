@@ -949,7 +949,14 @@
 					{
 						"name": "Get Manifest List",
 						"type": "Lookup",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Get Customer ID From Unit ID",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -1001,7 +1008,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"on": {
-											"value": "@pipeline().parameters.ProcessUnitCode",
+											"value": "@activity('Get Customer ID From Unit ID').output.firstrow.code",
 											"type": "Expression"
 										},
 										"cases": [
@@ -1080,7 +1087,7 @@
 																		"type": "Expression"
 																	},
 																	"Directory": {
-																		"value": "@pipeline().parameters.Directory",
+																		"value": "@activity('Get Customer ID From Unit ID').output.firstrow.code",
 																		"type": "Expression"
 																	},
 																	"ManifestFile": {
@@ -1111,6 +1118,35 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Get Customer ID From Unit ID",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT\n    customer_id,\n    code\nFROM \n    process.unit\nWHERE\n    id = @{pipeline().parameters.ProcessUnitID}",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SrcAzureSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
 					}
 				],
 				"parameters": {
@@ -1121,14 +1157,6 @@
 					"BlobContainer": {
 						"type": "string",
 						"defaultValue": "inbounddatafiles"
-					},
-					"Directory": {
-						"type": "string",
-						"defaultValue": "Arrival"
-					},
-					"ProcessUnitCode": {
-						"type": "string",
-						"defaultValue": "PU-WWI-REG"
 					}
 				},
 				"folder": {
@@ -1276,7 +1304,14 @@
 						"name": "Get Active Arrival Collections",
 						"description": "Get the active arrival collections for an specific customer.",
 						"type": "Lookup",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Get Customer ID From Unit ID",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -1289,7 +1324,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "SELECT\n    Collection_ID,\n    Collection_Name,\n    Location_Identifier,\n    Location_Idenyifier_Descriptor,\n    Location_Idenyifier_Code\nFROM \n    dbo.get_customer_active_arrival_collections(@{pipeline().parameters.CustomerID})\n;\n",
+									"value": "SELECT\n    Collection_ID,\n    Collection_Name,\n    Location_Identifier,\n    Location_Idenyifier_Descriptor,\n    Location_Idenyifier_Code\nFROM \n    dbo.get_customer_active_arrival_collections(@{activity('Get Customer ID From Unit ID').output.firstrow.customer_id})\n;\n",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -1343,7 +1378,7 @@
 												"type": "Expression"
 											},
 											"DestinationLocation": {
-												"value": "@pipeline().parameters.DestinationPath",
+												"value": "@activity('Get Customer ID From Unit ID').output.firstrow.code",
 												"type": "Expression"
 											}
 										}
@@ -1351,16 +1386,41 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Get Customer ID From Unit ID",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT\n    customer_id,\n    code\nFROM \n    process.unit\nWHERE\n    id = @{pipeline().parameters.ProcessUnitID}",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SrcAzureSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
 					}
 				],
 				"parameters": {
-					"CustomerID": {
+					"ProcessUnitID": {
 						"type": "int",
 						"defaultValue": 1
-					},
-					"DestinationPath": {
-						"type": "string",
-						"defaultValue": "/Arrival"
 					}
 				},
 				"folder": {
@@ -1370,6 +1430,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SrcArrivalCollections')]",
+				"[concat(variables('factoryId'), '/datasets/SrcAzureSqlDataset')]",
 				"[concat(variables('factoryId'), '/pipelines/Move DataFiles To Destination')]"
 			]
 		},
