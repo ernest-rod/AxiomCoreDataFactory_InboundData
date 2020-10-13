@@ -143,7 +143,7 @@
 					},
 					"DestinationPath": {
 						"type": "string",
-						"defaultValue": "/New Arrivals"
+						"defaultValue": "/Arrival"
 					}
 				},
 				"folder": {
@@ -585,7 +585,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "SELECT\n    con.base_name       AS ManifestFile,\n    con.collection_id   AS CollectionIDForManifest\nFROM \n    process.unit_detail AS unit \nINNER JOIN\n    arrival.collection AS col \n    ON unit.collection_id = col.id\nINNER JOIN\n    arrival.container AS con \n    ON col.id = con.collection_id\nWHERE\n    unit.unit_id = @{pipeline().parameters.ProcessUnitID}\n    AND con.base_name LIKE '%.manifest'\n    AND col.active = 1\n    AND con.active = 1",
+									"value": "SELECT\n    con.base_name       AS ManifestFile,\n    con.collection_id   AS CollectionIDForManifest\nFROM \n    process.unit_detail AS unit \nINNER JOIN\n    arrival.collection AS col \n    ON unit.collection_id = col.id\nINNER JOIN\n    arrival.container AS con \n    ON col.id = con.collection_id\nWHERE\n    unit.unit_id = @{pipeline().parameters.ProcessUnitID}\n    AND con.base_name LIKE '%.manifest.csv'\n    AND col.active = 1\n    AND con.active = 1",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -660,6 +660,32 @@
 															"enableStaging": false,
 															"translator": {
 																"type": "TabularTranslator",
+																"mappings": [
+																	{
+																		"source": {
+																			"name": "container_name",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "container_name",
+																			"type": "String",
+																			"physicalType": "varchar"
+																		}
+																	},
+																	{
+																		"source": {
+																			"name": "container_count",
+																			"type": "String",
+																			"physicalType": "String"
+																		},
+																		"sink": {
+																			"name": "container_count",
+																			"type": "String",
+																			"physicalType": "varchar"
+																		}
+																	}
+																],
 																"typeConversion": true,
 																"typeConversionSettings": {
 																	"allowDataTruncation": true,
@@ -721,10 +747,11 @@
 					},
 					"Directory": {
 						"type": "string",
-						"defaultValue": "New Arrival"
+						"defaultValue": "Arrival"
 					},
 					"ProcessUnitCode": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "PU-WWI-REG"
 					}
 				},
 				"folder": {
@@ -2576,6 +2603,7 @@
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
+					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
 				"schema": []
@@ -2627,6 +2655,7 @@
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
+					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
 				"schema": [
