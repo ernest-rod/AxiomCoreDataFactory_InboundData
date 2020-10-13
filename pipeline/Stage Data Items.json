@@ -65,6 +65,19 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Iterate Data Container List",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Data Container List",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"parameters": {
