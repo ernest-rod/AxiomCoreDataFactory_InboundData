@@ -1,6 +1,12 @@
 {
 	"name": "Stage Data Items",
 	"properties": {
+		"parameters": {
+			"ProcessUnitID": {
+				"type": "int",
+				"defaultValue": 1
+			}
+		},
 		"folder": {
 			"name": "Axiom Pipelines/Production"
 		},
