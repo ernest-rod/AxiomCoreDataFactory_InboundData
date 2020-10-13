@@ -53,7 +53,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT\n    con.base_name       AS ManifestFile,\n    con.collection_id   AS CollectionIDForManifest\nFROM \n    process.unit_detail AS unit \nINNER JOIN\n    arrival.collection AS col \n    ON unit.collection_id = col.id\nINNER JOIN\n    arrival.container AS con \n    ON col.id = con.collection_id\nWHERE\n    unit.unit_id = @{pipeline().parameters.ProcessUnitID}\n    AND con.base_name NOT LIKE '%.manifest.csv'\n    AND col.active = 1\n    AND con.active = 1",
+							"value": "SELECT\n    con.base_name       AS DataFile,\n    con.collection_id   AS CollectionIDForDataFile\nFROM \n    process.unit_detail AS unit \nINNER JOIN\n    arrival.collection AS col \n    ON unit.collection_id = col.id\nINNER JOIN\n    arrival.container AS con \n    ON col.id = con.collection_id\nWHERE\n    unit.unit_id = @{pipeline().parameters.ProcessUnitID}\n    AND con.base_name NOT LIKE '%.manifest.csv'\n    AND col.active = 1\n    AND con.active = 1",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -82,7 +82,8 @@
 					"items": {
 						"value": "@activity('Get Data Container List').output.value",
 						"type": "Expression"
-					}
+					},
+					"batchCount": 7
 				}
 			}
 		],
