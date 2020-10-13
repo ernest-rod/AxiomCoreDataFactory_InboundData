@@ -119,10 +119,6 @@
 			}
 		],
 		"parameters": {
-			"CustomerID": {
-				"type": "int",
-				"defaultValue": 1
-			},
 			"DestinationPath": {
 				"type": "string",
 				"defaultValue": "/Arrival"
