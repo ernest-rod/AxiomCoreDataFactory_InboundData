@@ -27,7 +27,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT\n    Collection_ID,\n    Collection_Name,\n    Location_Identifier,\n    Location_Idenyifier_Descriptor,\n    Location_Idenyifier_Code\nFROM \n    dbo.get_customer_active_arrival_collections(@{pipeline().parameters.CustomerID})\n;\n",
+							"value": "SELECT\n    Collection_ID,\n    Collection_Name,\n    Location_Identifier,\n    Location_Idenyifier_Descriptor,\n    Location_Idenyifier_Code\nFROM \n    dbo.get_customer_active_arrival_collections(@{activity('Get Customer ID From Unit ID').output.value})\n;\n",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
