@@ -5,16 +5,6 @@
 			"referenceName": "AzureBlobStorage_Inbound_Data",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"BlobContainer": {
-				"type": "string",
-				"defaultValue": "inbounddatafiles"
-			},
-			"Directory": {
-				"type": "string",
-				"defaultValue": "PU-WWI-REG"
-			}
-		},
 		"folder": {
 			"name": "Axiom Datasets/Test Area/WideWorldImporters"
 		},
@@ -24,14 +14,8 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "Colors.csv",
-				"folderPath": {
-					"value": "@dataset().Directory",
-					"type": "Expression"
-				},
-				"container": {
-					"value": "@dataset().BlobContainer",
-					"type": "Expression"
-				}
+				"folderPath": "PU-WWI-REG",
+				"container": "inbounddatafiles"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
