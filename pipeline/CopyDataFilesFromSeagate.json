@@ -119,10 +119,6 @@
 			}
 		],
 		"parameters": {
-			"DestinationPath": {
-				"type": "string",
-				"defaultValue": "/Arrival"
-			},
 			"ProcessUnitID": {
 				"type": "int",
 				"defaultValue": 1
