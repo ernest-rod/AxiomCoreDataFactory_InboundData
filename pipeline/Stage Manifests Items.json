@@ -57,7 +57,7 @@
 					},
 					"activities": [
 						{
-							"name": "Switch1",
+							"name": "Determine Unit To Process",
 							"type": "Switch",
 							"dependsOn": [],
 							"userProperties": [],
