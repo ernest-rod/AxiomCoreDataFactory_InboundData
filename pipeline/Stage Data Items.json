@@ -29,6 +29,42 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "Get Data Container List",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Get Customer ID From Unit ID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT\n    con.base_name       AS ManifestFile,\n    con.collection_id   AS CollectionIDForManifest\nFROM \n    process.unit_detail AS unit \nINNER JOIN\n    arrival.collection AS col \n    ON unit.collection_id = col.id\nINNER JOIN\n    arrival.container AS con \n    ON col.id = con.collection_id\nWHERE\n    unit.unit_id = @{pipeline().parameters.ProcessUnitID}\n    AND con.base_name NOT LIKE '%.manifest.csv'\n    AND col.active = 1\n    AND con.active = 1",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SrcAzureSqlDataset",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
 			}
 		],
 		"parameters": {
