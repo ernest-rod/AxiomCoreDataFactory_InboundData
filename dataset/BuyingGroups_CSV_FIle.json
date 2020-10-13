@@ -36,6 +36,7 @@
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
+			"nullValue": "NULL",
 			"quoteChar": "\""
 		},
 		"schema": [
