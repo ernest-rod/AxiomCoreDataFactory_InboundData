@@ -212,10 +212,6 @@
 				"type": "string",
 				"defaultValue": "inbounddatafiles"
 			},
-			"Directory": {
-				"type": "string",
-				"defaultValue": "Arrival"
-			},
 			"ProcessUnitCode": {
 				"type": "string",
 				"defaultValue": "PU-WWI-REG"
