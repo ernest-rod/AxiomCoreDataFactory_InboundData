@@ -5,6 +5,16 @@
 			"referenceName": "AzureBlobStorage_Inbound_Data",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"BlobContainer": {
+				"type": "string",
+				"defaultValue": "inbounddatafiles"
+			},
+			"Directory": {
+				"type": "string",
+				"defaultValue": "PU-WWI-REG"
+			}
+		},
 		"folder": {
 			"name": "Axiom Datasets/Test Area/WideWorldImporters"
 		},
@@ -20,6 +30,7 @@
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
+			"nullValue": "NULL",
 			"quoteChar": "\""
 		},
 		"schema": [
