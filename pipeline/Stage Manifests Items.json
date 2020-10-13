@@ -211,10 +211,6 @@
 			"BlobContainer": {
 				"type": "string",
 				"defaultValue": "inbounddatafiles"
-			},
-			"ProcessUnitCode": {
-				"type": "string",
-				"defaultValue": "PU-WWI-REG"
 			}
 		},
 		"folder": {
