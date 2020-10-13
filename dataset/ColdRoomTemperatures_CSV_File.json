@@ -24,8 +24,14 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "ColdRoomTemperatures.csv",
-				"folderPath": "PU-WWI-REG",
-				"container": "inbounddatafiles"
+				"folderPath": {
+					"value": "@dataset().Directory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().BlobContainer",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
