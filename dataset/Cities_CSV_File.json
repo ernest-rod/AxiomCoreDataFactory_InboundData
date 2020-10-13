@@ -24,12 +24,19 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "Cities.csv",
-				"folderPath": "PU-WWI-REG",
-				"container": "inbounddatafiles"
+				"folderPath": {
+					"value": "@dataset().Directory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().BlobContainer",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
+			"nullValue": "NULL",
 			"quoteChar": "\""
 		},
 		"schema": [
