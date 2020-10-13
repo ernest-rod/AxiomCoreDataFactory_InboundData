@@ -135,7 +135,7 @@
 																"type": "Expression"
 															},
 															"Directory": {
-																"value": "@pipeline().parameters.Directory",
+																"value": "@pipeline().parameters.ProcessUnitCode",
 																"type": "Expression"
 															},
 															"ManifestFile": {
