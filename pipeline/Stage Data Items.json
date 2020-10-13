@@ -83,7 +83,121 @@
 						"value": "@activity('Get Data Container List').output.value",
 						"type": "Expression"
 					},
-					"batchCount": 7
+					"batchCount": 7,
+					"activities": [
+						{
+							"name": "Determine Unit To Process",
+							"type": "Switch",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"on": {
+									"value": "@activity('Get Customer ID From Unit ID').output.firstrow.code",
+									"type": "Expression"
+								},
+								"cases": [
+									{
+										"value": "PU-WWI-REG",
+										"activities": [
+											{
+												"name": "Load Manifest Data",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "DelimitedTextSource",
+														"storeSettings": {
+															"type": "AzureBlobStorageReadSettings",
+															"recursive": true
+														},
+														"formatSettings": {
+															"type": "DelimitedTextReadSettings"
+														}
+													},
+													"sink": {
+														"type": "AzureSqlSink"
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"mappings": [
+															{
+																"source": {
+																	"name": "container_name",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "container_name",
+																	"type": "String",
+																	"physicalType": "varchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "container_count",
+																	"type": "String",
+																	"physicalType": "String"
+																},
+																"sink": {
+																	"name": "container_count",
+																	"type": "String",
+																	"physicalType": "varchar"
+																}
+															}
+														],
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "SrcManifestFiles",
+														"type": "DatasetReference",
+														"parameters": {
+															"BlobContainer": "inbounddatafiles",
+															"Directory": {
+																"value": "@activity('Get Customer ID From Unit ID').output.firstrow.code",
+																"type": "Expression"
+															},
+															"ManifestFile": {
+																"value": "@item().ManifestFile",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "Azure_SQL_Database_Table",
+														"type": "DatasetReference",
+														"parameters": {
+															"SchemaName": "stage",
+															"TableName": "manifest_item",
+															"DatabaseName": "WideWorldImporters",
+															"User": "Ernest",
+															"Password": "Nebadon@1515"
+														}
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						}
+					]
 				}
 			}
 		],
