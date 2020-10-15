@@ -42,6 +42,7 @@
 			},
 			{
 				"name": "Iterate Customer Arrival Collections",
+				"description": "Iterate the list of active collections.",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -91,6 +92,7 @@
 			},
 			{
 				"name": "Get Customer ID From Unit ID",
+				"description": "Get the Customer ID and the Code of the processing unit.",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
