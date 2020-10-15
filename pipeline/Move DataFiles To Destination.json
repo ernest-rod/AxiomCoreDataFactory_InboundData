@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "Get Container For The Collection",
+				"description": "Get the group of containers for each collection.",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -33,6 +34,7 @@
 			},
 			{
 				"name": "Iterate Each Data File",
+				"description": "Iterate the container list in order to move copy them.",
 				"type": "ForEach",
 				"dependsOn": [
 					{
