@@ -1,5 +1,5 @@
 {
-	"name": "CopyDataFilesFromSeagate",
+	"name": "Copy Data Files From Seagate",
 	"properties": {
 		"description": "Get the customer's data files from SFTP Seagate.",
 		"activities": [
